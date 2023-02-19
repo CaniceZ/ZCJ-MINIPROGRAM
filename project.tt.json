@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "ZCJ-MINIPROGRAM",
+  "appid": "testAppId",
+  "setting": {
+    "es6": false,
+    "minified": false
+  }
+}

@@ -1,0 +1,48 @@
+@import './variable.less';
+
+page {
+  background-color: rgba(246, 246, 246, 1);
+  min-height: 100vh;
+}
+
+// 全局样式
+view,
+scroll-view,
+text {
+  box-sizing: border-box;
+}
+
+.input-placeholder {
+  font-weight: 400;
+  color: #cacaca;
+  line-height: 20px;
+}
+
+.at-input--disabled {
+  opacity: 1;
+}
+
+/* 原子类 */
+// bg
+.white-bg {
+  background-color: white;
+}
+
+// color
+.text-primary-color {
+  color: var(--color-primary);
+}
+
+.text-secondary-color {
+  color: var(--color-text-secondary);
+}
+
+.ygp-tag {
+  display: inline-block;
+  font-weight: normal;
+  padding: 3px 4px;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: 20px;
+  border-radius: 4px;
+}
