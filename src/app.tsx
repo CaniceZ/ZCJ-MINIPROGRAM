@@ -1,8 +1,8 @@
 import useUpdateGuard from '@/hooks/setup/useUpdateGuard'
 import { Provider } from 'react-redux'
 import store from '@/store/index'
-import './app.less'
 import '@/package/styles/index.less'
+import './app.less'
 
 const App = ({ children }) => {
   useUpdateGuard()
@@ -11,7 +11,7 @@ const App = ({ children }) => {
 export default ({ children }) => {
   return (
     <Provider store={store}>
-        <App>{children}</App>
-      </Provider>
+      <App>{children}</App>
+    </Provider>
   )
 }

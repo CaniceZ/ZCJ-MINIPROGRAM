@@ -1,5 +1,7 @@
 import { View } from '@tarojs/components'
 import { ListView } from '@/package'
+import { Button } from '@nutui/nutui-react-taro';
+
 import RealName from './components/RealName'
 import TaskItem from './components/TaskItem'
 
@@ -23,18 +25,14 @@ export default () => {
   const { listData, listViewProps } = ListView.useListView(fetcher as any, {
     limit: 50,
   })
-
   return (
     <View>
+      <Button type='primary'>主要按钮</Button>
       <RealName></RealName>
       total：{listViewProps.pagination.total}
       <ListView {...listViewProps}>
         {listData.map((_, index) => (
-          <TaskItem
-            key={index}
-            index={index}
-          >
-          </TaskItem>
+          <TaskItem key={index} index={index}></TaskItem>
         ))}
       </ListView>
     </View>

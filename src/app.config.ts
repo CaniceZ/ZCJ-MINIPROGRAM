@@ -1,8 +1,5 @@
 export default defineAppConfig({
-  pages: [
-    'pages/index/index',
-    'pages/about/index'
-  ],
+  pages: ['pages/index/index', 'pages/about/index'],
   subpackages: [
     {
       root: 'subpackages/setting',
