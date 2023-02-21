@@ -1,0 +1,59 @@
+.navbar-wrap{
+  display: flex;
+  padding: 20px;
+  background: -webkit-linear-gradient(top, #efe7da, #f4f0ed);
+  .navbar-left{
+    display: flex;
+    align-items: center;
+    padding-right:15px;
+  }
+  .navbar-right{
+    flex-grow: 1;
+    position: relative;
+    .navbar-inp{
+      padding-right: 95px;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .search-text{
+      font-size: 30px;
+      position: absolute;
+      right: 20px;
+      top: 0;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
+}
+.pop-title{
+  display: flex;
+  justify-content: space-between;
+  &-des{
+    font-size: 34px;
+    color: #333;
+  }
+}
+.hot-city{
+  &-tit{
+    font-size: 32px;
+    color: #777;
+    margin: 20px 0;
+  }
+  &-list{
+    display: flex;
+    flex-wrap: wrap;
+    &-item{
+      width: 22%;
+      margin-right: 2%;
+      margin-bottom: 15px;
+      text-align: center;
+      &:nth-child(4){
+        margin-right: 0;
+      }
+      margin-right: 3%;
+      border: 1px solid #efefef;
+      padding: 10px 20px;
+    }
+  }
+}

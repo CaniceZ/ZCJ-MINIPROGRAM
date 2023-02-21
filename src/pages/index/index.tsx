@@ -1,11 +1,14 @@
 import { View } from '@tarojs/components'
 import { ListView } from '@/package'
-import { Button } from '@nutui/nutui-react-taro';
-
+import { useCallback, useEffect, useState } from 'react'
+import location from '@/utils/location'
 import RealName from './components/RealName'
 import TaskItem from './components/TaskItem'
 
 import './index.less'
+import NavBar from './components/NavBar'
+import Header from './components/Header'
+// import {getLocation, openLocation} from '@tarojs/taro'
 
 const data = Array(100).fill({})
 
@@ -25,9 +28,40 @@ export default () => {
   const { listData, listViewProps } = ListView.useListView(fetcher as any, {
     limit: 50,
   })
+  const [hotelName, setHotName] = useState()
+  // useEffect(() => {
+  //   getLocation({
+  //     type: 'gcj02',
+  //     success: function (res) {
+  //       const latitude = res.latitude
+  //       const longitude = res.longitude
+  //       const speed = res.speed
+  //       const accuracy = res.accuracy
+  //       console.log(latitude, longitude, speed, accuracy)
+  //       openLocation({
+  //         latitude,
+  //         longitude,
+  //         scale: 18,
+  //       })
+  //     },
+  //   })
+  // }, [])
+  useEffect(() => {
+    console.log(1)
+    location.getMap().then((res) => {
+      console.log(res, 10086)
+    })
+    // console.log(a)
+  }, [])
+  // 点击搜索
+  const handleSearch = useCallback((params) => {
+    setHotName(params)
+    console.log(hotelName)
+  }, [])
   return (
     <View>
-      <Button type='primary'>主要按钮</Button>
+      <NavBar></NavBar>
+      <Header handleSearch={handleSearch}></Header>
       <RealName></RealName>
       total：{listViewProps.pagination.total}
       <ListView {...listViewProps}>

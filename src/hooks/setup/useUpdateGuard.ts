@@ -13,7 +13,7 @@ const useUpdateGuard = () => {
     updateManager.onUpdateReady(function () {
       Taro.showModal({
         title: '更新检测', // 此处可自定义提示标题
-        content: '检测到新版本，是否重启易小钢小程序？', // 此处可自定义提示消息内容
+        content: '检测到新版本，是否重启小程序？', // 此处可自定义提示消息内容
         success: function (res) {
           if (res.confirm) {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启

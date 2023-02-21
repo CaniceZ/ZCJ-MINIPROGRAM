@@ -1,3 +1,5 @@
+import { getSystemInfo, getNetworkType } from '@tarojs/taro'
+
 /**
  * 生成uuid
  * @param len 长度
@@ -50,4 +52,29 @@ export function formatMoney(s1, n = 2) {
     t += l[i] + ((i + 1) % 3 === 0 && i + 1 !== l.length ? ',' : '')
   }
   return flag + t.split('').reverse().join('') + '.' + r
+}
+
+export function uIsGps() {
+  return new Promise((resolve) => {
+    // 首次api获取
+    getSystemInfo({
+      success: (res) => {
+        const { locationEnabled } = res
+        resolve(locationEnabled)
+      },
+    })
+  })
+}
+
+// 判断当前网络状态
+export function uIsNetworkType() {
+  return new Promise((resolve) => {
+    // 首次api获取
+    getNetworkType({
+      success: (res) => {
+        const { networkType } = res
+        resolve(networkType)
+      },
+    })
+  })
 }
