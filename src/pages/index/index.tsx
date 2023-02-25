@@ -1,13 +1,14 @@
 import { View } from '@tarojs/components'
 import { ListView } from '@/package'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import location from '@/utils/location'
 import RealName from './components/RealName'
-import TaskItem from './components/TaskItem'
-
-import './index.less'
+import TaskItem from '../../components/TaskItem'
 import NavBar from './components/NavBar'
 import Header from './components/Header'
+import ListType from './components/ListType'
+
+import './index.less'
 // import {getLocation, openLocation} from '@tarojs/taro'
 
 const data = Array(100).fill({})
@@ -28,7 +29,17 @@ export default () => {
   const { listData, listViewProps } = ListView.useListView(fetcher as any, {
     limit: 50,
   })
+  type City = {
+    type?: Number
+    name: String
+    level?: Number
+    parentCode?: Number
+    childAreas?: Array<City>
+  }
+  // 酒店名称
   const [hotelName, setHotName] = useState()
+  // 当前城市
+  const [initCity, setInitCity] = useState<City>()
   // useEffect(() => {
   //   getLocation({
   //     type: 'gcj02',
@@ -50,6 +61,7 @@ export default () => {
     console.log(1)
     location.getMap().then((res) => {
       console.log(res, 10086)
+      setInitCity({ name: res.address_component.city })
     })
     // console.log(a)
   }, [])
@@ -58,12 +70,37 @@ export default () => {
     setHotName(params)
     console.log(hotelName)
   }, [])
+  // 切换城市回调
+  const handleSetCity = useCallback((params) => {
+    setInitCity(params)
+    console.log(initCity)
+  }, [])
+  // 工作类型
+  const [type, setType] = useState()
+  const onTypeChange = useCallback((params) => {
+    setType(params)
+    console.log(params)
+  }, [])
   return (
     <View>
       <NavBar></NavBar>
-      <Header handleSearch={handleSearch}></Header>
+      {/* <Header
+        handleSearch={handleSearch}
+        handleSetCity={handleSetCity}
+        initCity={initCity}
+      ></Header> */}
+      {useMemo(() => {
+        return (
+          <Header
+            handleSearch={handleSearch}
+            handleSetCity={handleSetCity}
+            initCity={initCity}
+          ></Header>
+        )
+      }, [initCity])}
+
       <RealName></RealName>
-      total：{listViewProps.pagination.total}
+      <ListType value={type} onChange={onTypeChange}></ListType>
       <ListView {...listViewProps}>
         {listData.map((_, index) => (
           <TaskItem key={index} index={index}></TaskItem>

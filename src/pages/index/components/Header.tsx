@@ -1,51 +1,120 @@
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 
-import { FC, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Input, Popup, Icon } from '@nutui/nutui-react-taro'
+import address from '@/assets/json/address.json'
+import classNames from 'classnames'
 import './Header.less'
 
 type Props = {
+  initCity
+  handleSetCity: Function
   handleSearch: Function
 }
+type City = {
+  type?: Number
+  name: String
+  level?: Number
+  parentCode?: Number
+  childAreas?: Array<City>
+}
 const Header: FC<Props> = (props) => {
+  console.log(111)
   const [value, UpdateValue] = useState('')
+  const [selectedProvince, setSelectedProvince] = useState<City>()
+  // setSelectedCity(props.initCity)
+  // 热门城市
   const cityList = [
     {
+      name: '北京市',
+      type: 110000000000,
+    },
+    {
+      name: '上海市',
+      type: 310000000000,
+    },
+    {
+      name: '天津市',
+      type: 120000000000,
+    },
+    {
+      name: '重庆市',
+      type: 500000000000,
+    },
+    {
+      name: '广州市',
+      type: 440100000000,
+    },
+    {
+      name: '深圳市',
+      type: 440300000000,
+    },
+    {
+      name: '成都市',
+      type: 510100000000,
+    },
+    {
+      name: '杭州市',
+      type: 330100000000,
+    },
+  ]
+  // 直辖市
+  const noChildCityList = [
+    {
       name: '北京',
-      code: 1,
+      type: 110000000000,
     },
     {
       name: '上海',
-      code: 2,
+      type: 310000000000,
     },
     {
       name: '天津',
-      code: 3,
+      type: 120000000000,
     },
     {
       name: '重庆',
-      code: 4,
-    },
-    {
-      name: '广州',
-      code: 5,
-    },
-    {
-      name: '深圳',
-      code: 6,
-    },
-    {
-      name: '成都',
-      code: 7,
-    },
-    {
-      name: '杭州',
-      code: 8,
+      type: 500000000000,
     },
   ]
+  // 显示的列表
+  const curList = useMemo(
+    () =>
+      selectedProvince
+        ? address.find((item) => item.type === selectedProvince.type).childAreas
+        : address,
+    [selectedProvince],
+  )
+  // 调用父组件搜索
   const handleSearch = () => {
     props.handleSearch(value)
   }
+  // 调用父组件设置城市
+  const handleSetCity = (item) => {
+    props.handleSetCity(item)
+    setShowBottom(false)
+  }
+  // 列表点击
+  const setCity = (item) => {
+    if (noChildCityList.map((item2) => item2.type).includes(item.type)) {
+      // 点击了直辖市
+      console.log('选择了直辖市', item)
+      handleSetCity(item)
+    } else {
+      if (item.level === 1) {
+        // 点击了省份
+        setSelectedProvince(item)
+      } else {
+        console.log('选择了城市', item)
+        handleSetCity(item)
+      }
+    }
+  }
+  // 返回选择省
+  const backLevel1 = () => {
+    setSelectedProvince(undefined)
+  }
+  // 弹窗显隐
   const [showBottom, setShowBottom] = useState(false)
   return (
     <View className='navbar-wrap'>
@@ -55,7 +124,7 @@ const Header: FC<Props> = (props) => {
         }}
         className='navbar-left'
       >
-        广州
+        {props.initCity ? props.initCity.name : '定位中'}
       </View>
       <View className='navbar-right'>
         <Input
@@ -85,21 +154,65 @@ const Header: FC<Props> = (props) => {
       >
         <View className='pop-title'>
           <View className='pop-title-back'>
-            <Icon name='rect-left' color='#ccc' size={16}></Icon>
+            {selectedProvince ? (
+              <Icon
+                onClick={() => {
+                  backLevel1()
+                }}
+                name='rect-left'
+                color='#ccc'
+                size={16}
+              ></Icon>
+            ) : (
+              <View style='width:16px' />
+            )}
           </View>
           <View className='pop-title-des'>选择城市</View>
           <View></View>
         </View>
-        <View className='hot-city'>
-          <View className='hot-city-tit'>热门城市</View>
-          <View className='hot-city-list'>
-          {cityList.map((item) => (
-              <View className='hot-city-list-item' key={item.code}>
-                {item.name}
-              </View>
-          ))}
-          </View>
+        <View className='select-box'>
+          {selectedProvince ? <View className='selected'>{selectedProvince?.name}</View> : ''}
+          <View className='selected-txt'>请选择</View>
         </View>
+        <ScrollView scrollY style='height: calc(100% - 59px)'>
+          {!selectedProvince && (
+            <View className='hot-city'>
+              <View className='hot-city-tit'>热门城市</View>
+              <View className='hot-city-list'>
+                {cityList.map((item) => (
+                  <View
+                    onClick={() => {
+                      handleSetCity(item)
+                    }}
+                    className={classNames('hot-city-list-item', {
+                      'item-active': item.name === props.initCity?.name,
+                    })}
+                    key={item.type}
+                  >
+                    {item.name}
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+          <View className='all-city'>
+            <View className='all-city-list'>
+              {curList.map((item) => (
+                <View
+                  className={classNames('all-city-item', {
+                    'item-active': item.name === props.initCity?.name,
+                  })}
+                  key={item.type}
+                  onClick={() => {
+                    setCity(item)
+                  }}
+                >
+                  {item.name}
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
       </Popup>
     </View>
   )

@@ -1,0 +1,28 @@
+.list-type{
+  display: flex;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 20px 20px 0 20px;
+  &-item{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 25%;
+    margin-bottom: 20px;
+    .list-type-image{
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+    }
+    .list-type-name{
+      font-size: 30px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+  }
+  .item-active{
+    .list-type-name{
+      color: #e7d3b5;
+    }
+  }
+}

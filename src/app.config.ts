@@ -1,11 +1,13 @@
 export default defineAppConfig({
-  pages: ['pages/index/index', 'pages/about/index'],
+  pages: ['pages/index/index', 'pages/task/index', 'pages/about/index', 'pages/login/index'],
   subpackages: [
     {
       root: 'subpackages/setting',
       pages: [
-        // 我的-协议
+        // 用户协议
         'protocol/index',
+        // 隐私政策
+        'privacy/index',
       ],
     },
     {
@@ -30,6 +32,12 @@ export default defineAppConfig({
       {
         text: '首页',
         pagePath: 'pages/index/index',
+        iconPath: './assets/icon/home-index.png',
+        selectedIconPath: './assets/icon/home-index-active.png',
+      },
+      {
+        text: '任务',
+        pagePath: 'pages/task/index',
         iconPath: './assets/icon/home-index.png',
         selectedIconPath: './assets/icon/home-index-active.png',
       },
