@@ -2,6 +2,7 @@ import { View } from '@tarojs/components'
 import { ListView } from '@/package'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import location from '@/utils/location'
+import TaskCell from '@/components/TaskCell'
 import RealName from './components/RealName'
 import TaskItem from '../../components/TaskItem'
 import NavBar from './components/NavBar'
@@ -84,11 +85,6 @@ export default () => {
   return (
     <View>
       <NavBar></NavBar>
-      {/* <Header
-        handleSearch={handleSearch}
-        handleSetCity={handleSetCity}
-        initCity={initCity}
-      ></Header> */}
       {useMemo(() => {
         return (
           <Header
@@ -98,8 +94,10 @@ export default () => {
           ></Header>
         )
       }, [initCity])}
-
       <RealName></RealName>
+      <View style='margin: 10px'>
+        <TaskCell></TaskCell>
+      </View>
       <ListType value={type} onChange={onTypeChange}></ListType>
       <ListView {...listViewProps}>
         {listData.map((_, index) => (

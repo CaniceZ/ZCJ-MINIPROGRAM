@@ -4,20 +4,58 @@
   background: #fff;
   padding: 20px;
   margin-top: 20px;
-  .task-image{
+  .task-image-wrap{
     width: 80px;
     height: 100px;
     margin-right: 20px;
+    position: relative;
+    .task-image{
+      width: 80px;
+      height: 100px;
+    }
+    .task-image-mask{
+      display: none;
+    }
+    &.image-disable{
+      .task-image-mask{
+        border-radius: 50%;
+        position: absolute;
+        display: block;
+        top:13px;
+        left: 0;
+        width: 80px;
+        height: 80px;
+        background-color: rgba(0, 0, 0, .3);
+        color: #fff;
+        text-align: center;
+        line-height: 100px;
+      }
+    }
+    
   }
   .task-content{
     display: flex;
     flex-direction: column;
     .task-title{
       font-size: 32px;
+      width: 600px;
+      margin-bottom: 10px;
     }
     .task-desc{
-      font-size: 20px;
-      width: 600px;
+      .task-desc-time{
+        color: #ccc;
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+      .task-desc-price{
+        display: flex;
+        .task-desc-single{
+          margin-right: 20px;
+        }
+        .task-desc-total{
+          display: flex;
+        }
+      }
     }
   }
 }
