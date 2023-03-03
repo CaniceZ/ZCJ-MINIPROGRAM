@@ -1,4 +1,5 @@
-import { getSystemInfo, getNetworkType } from '@tarojs/taro'
+import { getSystemInfo, getNetworkType, redirectTo, showToast } from '@tarojs/taro'
+import storage from './storage'
 
 /**
  * 生成uuid
@@ -77,4 +78,23 @@ export function uIsNetworkType() {
       },
     })
   })
+}
+
+// 未登录跳转
+export function checkLoginAndRedirect() {
+  if (!storage.get('token')) {
+    showToast({ title: '前往登录...', icon: 'none' })
+    redirectTo({ url: '/pages/login/index' })
+    return false
+  } else {
+    return true
+  }
+}
+
+// 未认证跳转
+export function checkRealnameAndRedirect() {
+  if (!storage.get('token')) {
+    showToast({ title: '前往认证...', icon: 'none' })
+    redirectTo({ url: '/subpackages/realname/info/index' })
+  }
 }

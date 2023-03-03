@@ -3,10 +3,13 @@ import { navigateTo } from '@tarojs/taro'
 import { Button, Swiper, SwiperItem, Divider, Tag } from '@nutui/nutui-react-taro'
 import { useState, useEffect, useCallback } from 'react'
 import TaskItem from '@/components/TaskItem'
+import QrcodePopup from '@/components/QrcodePopup'
+import { checkLoginAndRedirect } from '@/utils/utils'
 import './index.less'
 
 export default () => {
   const [initPage1] = useState(0)
+  const [isShow, setIsShow] = useState(false)
   const [list, setList] = useState<string[]>([])
   useEffect(() => {
     setTimeout(() => {
@@ -23,6 +26,14 @@ export default () => {
   const goDetail = useCallback(() => {
     navigateTo({ url: '/subpackages/task/checklist/index' })
   }, [])
+  const signUp = async () => {
+    if (checkLoginAndRedirect()) {
+      console.log('立即报名')
+    }
+  }
+  const showQrCode = () => {
+    setIsShow(true)
+  }
   return (
     <View className='taskdetail-wrap'>
       {/* 完成情况 */}
@@ -178,14 +189,23 @@ export default () => {
           <View className='task-detail-sign-value'>2023-03-22 09:02:56</View>
         </View>
       </View>
+      {/* 底部操作栏 */}
       <View className='task-deatil-bottom'>
         <View className='task-deatil-bottom-btn'>
-          <Button block type='info' disabled={false}>
+          <Button block type='info' onClick={signUp} disabled={false}>
             立刻报名
           </Button>
         </View>
-        <View className='add-wx'>添加微信</View>
+        <View className='add-wx' onClick={showQrCode}>添加微信</View>
       </View>
+      {/* 联系人二维码 */}
+      <QrcodePopup
+        visible={isShow}
+        type='wx'
+        onClose={() => {
+          setIsShow(false)
+        }}
+      ></QrcodePopup>
     </View>
   )
 }

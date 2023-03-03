@@ -1,6 +1,8 @@
-import { Tabs, TabPane } from '@nutui/nutui-react-taro'
+import { Tabs } from '@nutui/nutui-react-taro'
 import { useState } from 'react'
 import TaskCell from '@/components/TaskCell'
+import { checkLoginAndRedirect } from '@/utils/utils'
+import { useDidShow } from '@tarojs/taro'
 import './index.less'
 
 export default () => {
@@ -13,6 +15,9 @@ export default () => {
       a: '22',
     },
   ]
+  useDidShow(() => {
+    checkLoginAndRedirect()
+  })
   return (
     <>
       <Tabs
@@ -23,23 +28,23 @@ export default () => {
           setTab1value(paneKey)
         }}
       >
-        <TabPane title='全部任务' className='bg-tab-pane'>
+        <Tabs.TabPane title='全部任务' className='bg-tab-pane'>
           {listData.map((_, index) => (
             <TaskCell key={index} {..._}></TaskCell>
           ))}
-        </TabPane>
-        <TabPane title='待开始' className='bg-tab-pane'>
+        </Tabs.TabPane>
+        <Tabs.TabPane title='待开始' className='bg-tab-pane'>
           {' '}
           Tab 2{' '}
-        </TabPane>
-        <TabPane title='进行中' className='bg-tab-pane'>
+        </Tabs.TabPane>
+        <Tabs.TabPane title='进行中' className='bg-tab-pane'>
           {' '}
           Tab 3{' '}
-        </TabPane>
-        <TabPane title='已完成' className='bg-tab-pane'>
+        </Tabs.TabPane>
+        <Tabs.TabPane title='已完成' className='bg-tab-pane'>
           {' '}
           Tab 3{' '}
-        </TabPane>
+        </Tabs.TabPane>
       </Tabs>
     </>
   )

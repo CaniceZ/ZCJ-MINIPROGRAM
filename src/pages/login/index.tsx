@@ -1,17 +1,26 @@
 import { View, Image, Text } from '@tarojs/components'
 import { Button, Checkbox } from '@nutui/nutui-react-taro'
 import { useEffect, useState, useCallback } from 'react'
-import { hideHomeButton, switchTab } from '@tarojs/taro'
+import { switchTab, showToast } from '@tarojs/taro'
+import storage from '@/utils/storage'
 import './index.less'
 
 export default () => {
   const [checked, setChecked] = useState(false)
   useEffect(() => {
-    hideHomeButton()
+    // hideHomeButton()
   })
   const toHome = useCallback(() => {
     switchTab({ url: '/pages/index/index' })
   }, [])
+  const loginHandle = () => {
+    if (!checked) {
+      showToast({ title: '请先阅读并同意隐私政策及用户协议', icon: 'none' })
+      return false
+    }
+    storage.set('token', 10086)
+    toHome()
+  }
   return (
     <View className='login-wrap'>
       <Image
@@ -19,7 +28,14 @@ export default () => {
         className='login-img'
         src='https://qiniu-fe.yigongpin.com/img_404.png'
       ></Image>
-      <Button block type='info' className='m10'>
+      <Button
+        block
+        type='info'
+        className='m10'
+        onClick={() => {
+          loginHandle()
+        }}
+      >
         微信一键登录
       </Button>
       <Button block type='default' onClick={toHome}>

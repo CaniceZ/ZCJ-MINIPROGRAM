@@ -8,6 +8,10 @@ export default defineAppConfig({
         'protocol/index',
         // 隐私政策
         'privacy/index',
+        // 关于我们
+        'aboutme/index',
+        // 基本资料
+        'userinfo/index',
       ],
     },
     {
@@ -19,6 +23,15 @@ export default defineAppConfig({
         'checksubmit/index',
         // 任务详情
         'detail/index',
+      ],
+    },
+    {
+      root: 'subpackages/realname',
+      pages: [
+        // 实名认证-提交
+        'info/index',
+        // 实名认证-结果页
+        'result/index',
       ],
     },
   ],
