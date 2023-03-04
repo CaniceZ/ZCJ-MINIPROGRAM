@@ -8,6 +8,7 @@ import TaskItem from '../../components/TaskItem'
 import NavBar from './components/NavBar'
 import Header from './components/Header'
 import ListType from './components/ListType'
+import Recommend from './components/Recommend'
 
 import './index.less'
 // import {getLocation, openLocation} from '@tarojs/taro'
@@ -82,6 +83,9 @@ export default () => {
     setType(params)
     console.log(params)
   }, [])
+  // 去接单弹窗
+  const [recommendShow, setRecommendShow] = useState(false)
+  const recommendList = useMemo(() => (listData.length > 0 ? listData.slice(0, 7) : []), [listData])
   return (
     <View>
       <NavBar></NavBar>
@@ -94,7 +98,11 @@ export default () => {
           ></Header>
         )
       }, [initCity])}
-      <RealName></RealName>
+      <RealName
+        show={() => {
+          setRecommendShow(true)
+        }}
+      ></RealName>
       <View style='margin: 10px'>
         <TaskCell></TaskCell>
       </View>
@@ -104,6 +112,13 @@ export default () => {
           <TaskItem key={index} index={index}></TaskItem>
         ))}
       </ListView>
+      <Recommend
+        visible={recommendShow}
+        list={recommendList}
+        onClose={() => {
+          setRecommendShow(false)
+        }}
+      ></Recommend>
     </View>
   )
 }

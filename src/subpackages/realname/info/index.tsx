@@ -58,6 +58,7 @@ export default () => {
           defaultValue={state.bankcount}
           inputAlign='right'
           type='digit'
+          maxlength={18}
         />
         <Input
           name='tel'
@@ -93,7 +94,7 @@ export default () => {
         <Input
           name='number'
           label='工龄'
-          placeholder=''
+          placeholder='工龄'
           defaultValue={state.age}
           inputAlign='right'
           type='digit'
