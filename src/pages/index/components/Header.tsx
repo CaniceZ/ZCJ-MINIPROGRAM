@@ -4,10 +4,14 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { Input, Popup, Icon } from '@nutui/nutui-react-taro'
 import address from '@/assets/json/address.json'
 import classNames from 'classnames'
+import storage from '@/utils/storage'
 import './Header.less'
 
 type Props = {
   initCity
+  hotelName
+  setLocal: Function
+  setHotName: Function
   handleSetCity: Function
   handleSearch: Function
 }
@@ -19,8 +23,6 @@ type City = {
   childAreas?: Array<City>
 }
 const Header: FC<Props> = (props) => {
-  console.log(111)
-  const [value, UpdateValue] = useState('')
   const [selectedProvince, setSelectedProvince] = useState<City>()
   // setSelectedCity(props.initCity)
   // 热门城市
@@ -77,6 +79,11 @@ const Header: FC<Props> = (props) => {
       type: 500000000000,
     },
   ]
+  // 当前定位的城市
+  const [curCity, setCurCity] = useState()
+  useEffect(() => {
+    setCurCity(storage.get('localAddress')?.city)
+  }, [curCity])
   // 显示的列表
   const curList = useMemo(
     () =>
@@ -85,14 +92,15 @@ const Header: FC<Props> = (props) => {
         : address,
     [selectedProvince],
   )
-  // 调用父组件搜索
-  const handleSearch = () => {
-    props.handleSearch(value)
-  }
   // 调用父组件设置城市
   const handleSetCity = (item) => {
     props.handleSetCity(item)
     setShowBottom(false)
+  }
+  // 调用父组件设置当前城市
+  const childSetLocal = () => {
+    setCurCity(storage.get('localAddress')?.city)
+    handleSetCity({ name: storage.get('localAddress')?.city })
   }
   // 列表点击
   const setCity = (item) => {
@@ -133,11 +141,17 @@ const Header: FC<Props> = (props) => {
           clearable
           leftIconSize='14'
           placeholder='请输入酒店名称'
+          defaultValue={props.hotelName}
           onChange={(val) => {
-            UpdateValue(val)
+            props.setHotName(val)
           }}
         ></Input>
-        <View className='search-text' onClick={handleSearch}>
+        <View
+          className='search-text'
+          onClick={() => {
+            props.handleSearch()
+          }}
+        >
           {' '}
           搜索{' '}
         </View>
@@ -175,6 +189,12 @@ const Header: FC<Props> = (props) => {
           <View className='selected-txt'>请选择</View>
         </View>
         <ScrollView scrollY style='height: calc(100% - 59px)'>
+          {!selectedProvince && (
+            <View className='cur-city'>
+              <View className='cur-city-title'>定位城市</View>
+              <View className='cur-city-name' onClick={childSetLocal}>{curCity}</View>
+            </View>
+          )}
           {!selectedProvince && (
             <View className='hot-city'>
               <View className='hot-city-tit'>热门城市</View>

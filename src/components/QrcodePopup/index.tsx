@@ -24,7 +24,12 @@ export default (props) => {
       <Overlay lockScroll visible={visible2}>
         <div className='wrapper'>
           <div className='wrapper-content'>
-            <Image className='qrcode-image' mode='aspectFit' src={urlMap[type]}></Image>
+            <Image
+              className='qrcode-image'
+              mode='aspectFit'
+              show-menu-by-longpress='true'
+              src={urlMap[type]}
+            ></Image>
             <View className='qrcode-desc'>{typeMap[type]}</View>
             <Icon
               onClick={() => {

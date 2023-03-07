@@ -23,7 +23,7 @@ let qqMapSdk
 function init() {
   QQMapWX = require('./qqmap-wx-jssdk.js')
   qqMapSdk = new QQMapWX({
-    key: 'DMCBZ-62CKJ-YO6F2-KQXVC-O5FK2-GFBCZ',
+    key: 'VYHBZ-5T7WV-TRPPQ-USNY4-MPDNV-4XFWH',
   })
 }
 

@@ -1,14 +1,14 @@
 import { View, Image, Text } from '@tarojs/components'
 import { Button, Checkbox } from '@nutui/nutui-react-taro'
 import { useEffect, useState, useCallback } from 'react'
-import { switchTab, showToast } from '@tarojs/taro'
+import { switchTab, showToast, navigateTo, hideHomeButton } from '@tarojs/taro'
 import storage from '@/utils/storage'
 import './index.less'
 
 export default () => {
   const [checked, setChecked] = useState(false)
   useEffect(() => {
-    // hideHomeButton()
+    hideHomeButton()
   })
   const toHome = useCallback(() => {
     switchTab({ url: '/pages/index/index' })
@@ -20,6 +20,9 @@ export default () => {
     }
     storage.set('token', 10086)
     toHome()
+  }
+  const toRouter = (path: string) => {
+    navigateTo({ url: `/subpackages/setting/${path}/index` })
   }
   return (
     <View className='login-wrap'>
@@ -51,8 +54,12 @@ export default () => {
         >
           <Text className='agree-text'>同意</Text>
         </Checkbox>
-        <Text className='agree-link'>《隐私政策》</Text>
-        <Text className='agree-link'>《用户协议》</Text>
+        <Text className='agree-link' onClick={() => {
+            toRouter('privacy')
+          }}>《隐私政策》</Text>
+        <Text className='agree-link' onClick={() => {
+            toRouter('protocol')
+          }}>《用户协议》</Text>
       </View>
     </View>
   )

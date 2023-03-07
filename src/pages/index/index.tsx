@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components'
-import { ListView } from '@/package'
+// import { ListView } from '@/package'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import location from '@/utils/location'
 import TaskCell from '@/components/TaskCell'
@@ -28,9 +28,10 @@ const fetcher = async (params) => {
 }
 
 export default () => {
-  const { listData, listViewProps } = ListView.useListView(fetcher as any, {
-    limit: 50,
-  })
+  // const { listData, listViewProps } = ListView.useListView(fetcher as any, {
+  //   limit: 50,
+  // })
+  const listData = Array(20).fill({})
   type City = {
     type?: Number
     name: String
@@ -42,6 +43,8 @@ export default () => {
   const [hotelName, setHotName] = useState()
   // 当前城市
   const [initCity, setInitCity] = useState<City>()
+  // 工作类型
+  const [type, setType] = useState(1)
   // useEffect(() => {
   //   getLocation({
   //     type: 'gcj02',
@@ -60,44 +63,59 @@ export default () => {
   //   })
   // }, [])
   useEffect(() => {
-    console.log(1)
     location.getMap().then((res) => {
-      console.log(res, 10086)
       setInitCity({ name: res.address_component.city })
     })
     // console.log(a)
   }, [])
   // 点击搜索
-  const handleSearch = useCallback((params) => {
-    setHotName(params)
-    console.log(hotelName)
-  }, [])
+  // const handleSearch = useCallback(() => {
+  //   handleApi()
+  // }, [hotelName, initCity, type])
+  const handleSearch = () => {
+    handleApi()
+  }
   // 切换城市回调
-  const handleSetCity = useCallback((params) => {
+  const handleSetCity = (params) => {
     setInitCity(params)
-    console.log(initCity)
-  }, [])
-  // 工作类型
-  const [type, setType] = useState()
-  const onTypeChange = useCallback((params) => {
+    handleApi({ initCity: params })
+  }
+  // 工种类型修改
+  const onTypeChange = (params) => {
     setType(params)
-    console.log(params)
+    handleApi({ type: params }) // 改动的字段
+  }
+  // 重新设置定位为当前位置
+  const setLocal = useCallback(() => {
+    location.getMap().then((res) => {
+      setInitCity({ name: res.address_component.city })
+    })
   }, [])
+
+  // 调用后端查询接口
+  const handleApi = (changeParams = {}) => {
+    const queryData = {
+      hotelName,
+      type,
+      initCity,
+      ...changeParams,
+    }
+    console.log(queryData)
+  }
   // 去接单弹窗
   const [recommendShow, setRecommendShow] = useState(false)
   const recommendList = useMemo(() => (listData.length > 0 ? listData.slice(0, 7) : []), [listData])
   return (
     <View>
       <NavBar></NavBar>
-      {useMemo(() => {
-        return (
-          <Header
-            handleSearch={handleSearch}
-            handleSetCity={handleSetCity}
-            initCity={initCity}
-          ></Header>
-        )
-      }, [initCity])}
+      <Header
+        handleSearch={handleSearch}
+        setHotName={(value) => setHotName(value)}
+        handleSetCity={handleSetCity}
+        initCity={initCity}
+        hotelName={hotelName}
+        setLocal={setLocal}
+      ></Header>
       <RealName
         show={() => {
           setRecommendShow(true)
@@ -107,11 +125,9 @@ export default () => {
         <TaskCell></TaskCell>
       </View>
       <ListType value={type} onChange={onTypeChange}></ListType>
-      <ListView {...listViewProps}>
-        {listData.map((_, index) => (
+      {listData.map((_, index) => (
           <TaskItem key={index} index={index}></TaskItem>
         ))}
-      </ListView>
       <Recommend
         visible={recommendShow}
         list={recommendList}
