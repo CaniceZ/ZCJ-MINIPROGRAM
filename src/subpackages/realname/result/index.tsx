@@ -2,11 +2,15 @@ import { Button, Icon } from '@nutui/nutui-react-taro'
 import { View } from '@tarojs/components'
 import { switchTab } from '@tarojs/taro'
 import { useCallback } from 'react'
+import { useAppDispatch } from '@/hooks/useStore'
+import { setActiveVisible } from '@/store/tabbar'
 import './index.less'
 
 export default () => {
+  const dispatch = useAppDispatch()
   const toHome = useCallback(() => {
     switchTab({ url: '/pages/index/index' })
+    dispatch(setActiveVisible(0))
   }, [])
   return (
     <View className='result-wrap'>

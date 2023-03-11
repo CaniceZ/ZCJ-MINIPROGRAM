@@ -145,6 +145,9 @@ const Header: FC<Props> = (props) => {
           onChange={(val) => {
             props.setHotName(val)
           }}
+          onClear={(val) => {
+            props.setHotName(val)
+          }}
         ></Input>
         <View
           className='search-text'

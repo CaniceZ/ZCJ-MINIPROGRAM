@@ -5,9 +5,14 @@ import { useState } from 'react'
 import './index.less'
 
 export default () => {
-  const [val, setVal] = useState()
+  const [val, setVal] = useState('')
   const onChange = (value) => {
     setVal(value)
+  }
+  const formmatAge = (value: string) => {
+    let newValue = value.replace(/^(\-)*(\d+)\.(\d).*$/, '$1$2.5')
+    setVal(newValue)
+    return newValue
   }
   const submit = () => {
     showToast({ title: val + '', icon: 'none' })
@@ -15,13 +20,12 @@ export default () => {
   return (
     <>
       <View className='checksubmit-wrap'>
-        <View className='checksubmit-title'>
-          2023-02-28 {true ? '清洁房量(间)' : '服务工时(小时)'}
-        </View>
-        <View className='checksubmit-label'>{true ? '标间' : '工时(小时)'}</View>
+        <View className='checksubmit-title'>2023-02-28 服务工时(小时)</View>
+        <View className='checksubmit-label'>工时(小时)</View>
         {/* <Input className='input-wrap' value={val} type='digit' onInput={onChange} /> */}
         <Input
           className='input-wrap'
+          formatter={formmatAge}
           defaultValue={val}
           type='number'
           placeholder='请输入'

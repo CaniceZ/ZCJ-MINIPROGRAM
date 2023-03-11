@@ -8,7 +8,7 @@ import ListView from './components/list-view'
 // import Tabs from './components/tabs'
 // import type { TabItemType } from './components/tabs'
 // import Popup from './components/popup'
-// import SafeArea from './components/safe-area'
+import SafeArea from './components/safe-area'
 // import Checkbox from './components/checkbox'
 // import type { CheckOptionType } from './components/checkbox'
 // import Descriptions from './components/descriptions'
@@ -36,7 +36,7 @@ export {
   // GridItem,
   // Tabs,
   // Popup,
-  // SafeArea,
+  SafeArea,
   // Checkbox,
   // Descriptions,
   // DescriptionsItem,

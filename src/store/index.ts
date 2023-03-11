@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './user'
+import tabbarReducer from './tabbar'
 
 const store = configureStore({
   reducer: {
     user: userReducer,
+    tabbar: tabbarReducer,
   },
 })
 

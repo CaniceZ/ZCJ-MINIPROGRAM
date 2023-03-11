@@ -1,5 +1,11 @@
 export default defineAppConfig({
-  pages: ['pages/index/index', 'pages/task/index', 'pages/about/index', 'pages/login/index'],
+  pages: [
+    'pages/index/index',
+    'pages/task/index',
+    'pages/about/index',
+    'pages/login/index',
+    'pages/getPhoneNumber/index',
+  ],
   subpackages: [
     {
       root: 'subpackages/setting',
@@ -42,6 +48,7 @@ export default defineAppConfig({
     navigationBarTextStyle: 'black',
   },
   tabBar: {
+    custom: true,
     color: '#868686',
     selectedColor: '#FF6720',
     borderStyle: 'white',
@@ -71,5 +78,5 @@ export default defineAppConfig({
       desc: '您的位置信息将用于小程序位置接口的效果展示',
     },
   },
-  requiredPrivateInfos: ['getLocation'],
+  requiredPrivateInfos: ['getLocation', 'chooseLocation'],
 })

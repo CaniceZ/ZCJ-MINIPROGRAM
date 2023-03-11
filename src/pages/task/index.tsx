@@ -1,8 +1,6 @@
 import { Tabs } from '@nutui/nutui-react-taro'
 import { useState } from 'react'
 import TaskCell from '@/components/TaskCell'
-import { checkLoginAndRedirect } from '@/utils/utils'
-import { useDidShow } from '@tarojs/taro'
 import './index.less'
 
 export default () => {
@@ -15,9 +13,6 @@ export default () => {
       a: '22',
     },
   ]
-  useDidShow(() => {
-    checkLoginAndRedirect()
-  })
   return (
     <>
       <Tabs

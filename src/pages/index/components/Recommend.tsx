@@ -12,7 +12,7 @@ const Recommend: FC = (props: any) => {
   const [visible2, setVisible] = useState(false)
   return (
     <>
-      <Overlay lockScroll visible={visible2}>
+      <Overlay lockScroll visible={visible2} zIndex={10000}>
         <View className='wrapper'>
           <ScrollView scrollY className='wrapper-content'>
             <View className='wrapper-content-tit'>优质推荐商家</View>

@@ -1,17 +1,18 @@
 import { View, Image, Text } from '@tarojs/components'
 import { Button, Checkbox } from '@nutui/nutui-react-taro'
-import { useEffect, useState, useCallback } from 'react'
-import { switchTab, showToast, navigateTo, hideHomeButton } from '@tarojs/taro'
+import { useState, useCallback } from 'react'
+import { switchTab, showToast, navigateTo } from '@tarojs/taro'
 import storage from '@/utils/storage'
+import { useAppDispatch } from '@/hooks/useStore'
+import { setActiveVisible } from '@/store/tabbar'
 import './index.less'
 
 export default () => {
   const [checked, setChecked] = useState(false)
-  useEffect(() => {
-    hideHomeButton()
-  })
+  const dispatch = useAppDispatch()
   const toHome = useCallback(() => {
     switchTab({ url: '/pages/index/index' })
+    dispatch(setActiveVisible(0))
   }, [])
   const loginHandle = () => {
     if (!checked) {

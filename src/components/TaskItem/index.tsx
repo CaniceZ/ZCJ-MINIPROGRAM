@@ -24,7 +24,7 @@ const TaskItem: FC<Props> = (props) => {
       </View>
       <View className='task-content'>
         <View className='task-title text-ellipsis'>
-          标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
+          标题标题标题标
           {index?.toString()}
         </View>
         <View className='task-desc'>

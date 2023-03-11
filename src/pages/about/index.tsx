@@ -1,25 +1,33 @@
 import { Icon } from '@nutui/nutui-react-taro'
 import { View } from '@tarojs/components'
-import { navigateTo, switchTab, useDidShow } from '@tarojs/taro'
+import { navigateTo, switchTab } from '@tarojs/taro'
 import storage from '@/utils/storage'
-import { checkLoginAndRedirect } from '@/utils/utils'
+import { useAppDispatch } from '@/hooks/useStore'
+import { setActiveVisible } from '@/store/tabbar'
+import QrcodePopup from '@/components/QrcodePopup'
+import { useState } from 'react'
 import './index.less'
 
 export default () => {
-  useDidShow(() => {
-    checkLoginAndRedirect()
-  })
+  const dispatch = useAppDispatch()
   const logout = () => {
     storage.remove('token')
     switchTab({ url: '/pages/index/index' })
+    dispatch(setActiveVisible(0))
   }
   const toRouter = (path: string) => {
     navigateTo({ url: `/subpackages/setting/${path}/index` })
   }
+  const [isShow, setIsShow] = useState(false)
   return (
     <>
       <View className='about-wrap'>
-        <View className='about-item-wrap about-info'>
+        <View
+          className='about-item-wrap about-info'
+          onClick={() => {
+            toRouter('userinfo')
+          }}
+        >
           <View className='about-label'>
             <View className='about-info-username'>郑创俊</View>
             <View className='about-info-phone'>
@@ -32,7 +40,12 @@ export default () => {
         </View>
       </View>
       <View className='about-wrap'>
-        <View className='about-item-wrap'>
+        <View
+          className='about-item-wrap'
+          onClick={() => {
+            setIsShow(true)
+          }}
+        >
           <View className='about-label'>安全中心</View>
           <View className='about-value'>
             <View className='about-value-text'>修改绑定手机</View>
@@ -87,6 +100,14 @@ export default () => {
           退出登录
         </View>
       </View>
+      {/* 联系人二维码 */}
+      <QrcodePopup
+        visible={isShow}
+        type='wx'
+        onClose={() => {
+          setIsShow(false)
+        }}
+      ></QrcodePopup>
     </>
   )
 }
