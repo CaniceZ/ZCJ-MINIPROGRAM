@@ -1,6 +1,7 @@
 import { Tabs } from '@nutui/nutui-react-taro'
 import { useState } from 'react'
 import TaskCell from '@/components/TaskCell'
+import Header from '@/components/Header'
 import './index.less'
 
 export default () => {
@@ -11,10 +12,21 @@ export default () => {
     },
     {
       a: '22',
+    },{
+      a: '33',
+    },
+    {
+      a: '44',
+    },{
+      a: '55',
+    },
+    {
+      a: '66',
     },
   ]
   return (
     <>
+      <Header></Header>
       <Tabs
         value={tab1value}
         color='red'

@@ -14,7 +14,7 @@ const trial: any = {
 }
 
 // Java微服务
-const services = ['uc', 'sys', 'bciscm', 'area', 'sys', 'crm']
+const services = ['uc', 'wx', 'sys', 'bciscm', 'area', 'sys', 'crm']
 
 function getBaseURL(): BaseUrl {
   if (envVersion === 'release') {

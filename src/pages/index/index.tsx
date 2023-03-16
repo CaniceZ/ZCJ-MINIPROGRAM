@@ -59,8 +59,8 @@ export default () => {
     location.getMap().then((res) => {
       setInitCity({ name: res.address_component.city })
       fetchData(handleApi({ initCity: { name: res.address_component.city } }))
-      stopPullDownRefresh()
     })
+    stopPullDownRefresh()
   })
   useEffect(() => {
     // getLocation({

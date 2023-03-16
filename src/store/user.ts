@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getDetail } from '@/api/user'
+// import { getDetail } from '@/api/user'
 import { UserType } from './types'
 
 const name = 'user'
@@ -19,7 +19,7 @@ export const afterLogin = createAsyncThunk(`${name}/afterLogin`, async (data: an
   dispatch(setToken(token))
   storage.set('loginInfo', data)
   storage.set('token', token)
-  return await getDetail()
+  // return await getDetail()
 })
 
 export const userSlice = createSlice({

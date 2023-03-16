@@ -5,6 +5,9 @@ import { Input, Popup, Icon } from '@nutui/nutui-react-taro'
 import address from '@/assets/json/address.json'
 import classNames from 'classnames'
 import storage from '@/utils/storage'
+import { openSetting } from '@tarojs/taro'
+
+import location from '@/utils/location'
 import './Header.less'
 
 type Props = {
@@ -124,15 +127,32 @@ const Header: FC<Props> = (props) => {
   }
   // 弹窗显隐
   const [showBottom, setShowBottom] = useState(false)
+  // 点击定位中或者城市
+  const showBottomOrSetting = () => {
+    if (!props.initCity) {
+      location.getOpenSetting()
+      // openSetting({
+      //   // eslint-disable-next-line no-shadow
+      //   success(res) {
+      //     console.log(555)
+      //     if (res.authSetting['scope.userLocation']) {
+      //       // getAuthorize(resolve)
+      //     }
+      //   },
+      // })
+    } else {
+      setShowBottom(true)
+    }
+  }
   return (
     <View className='navbar-wrap'>
       <View
         onClick={() => {
-          setShowBottom(true)
+          showBottomOrSetting()
         }}
         className='navbar-left'
       >
-        {props.initCity ? props.initCity.name : '定位中'}
+        {props.initCity ? props.initCity.name : '打开定位'}
       </View>
       <View className='navbar-right'>
         <Input
@@ -195,7 +215,9 @@ const Header: FC<Props> = (props) => {
           {!selectedProvince && (
             <View className='cur-city'>
               <View className='cur-city-title'>定位城市</View>
-              <View className='cur-city-name' onClick={childSetLocal}>{curCity}</View>
+              <View className='cur-city-name' onClick={childSetLocal}>
+                {curCity}
+              </View>
             </View>
           )}
           {!selectedProvince && (

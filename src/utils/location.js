@@ -39,13 +39,13 @@ async function getMap(setGlobal = true) {
   const workType = await noneWorkType()
   if (!workType) {
     hideLoading()
-    showToast('网络不佳,请稍后重试')
+    showToast({ title: '网络不佳,请稍后重试', icon: 'none' })
     return
   }
   const Gps = await openGps()
   if (!Gps) {
     hideLoading()
-    showToast('请打开GPS')
+    showToast({ title: '请打开GPS', icon: 'none' })
     return
   }
   init()
@@ -56,7 +56,7 @@ async function getMap(setGlobal = true) {
     hideLoading()
     return localAddress
   }
-  showToast('无法获取经纬度信息')
+  showToast({ title: '无法获取经纬度信息', icon: 'none' })
   return false
 }
 
@@ -81,7 +81,7 @@ async function getAuthorize() {
       },
       fail(err) {
         console.log({ logType: 'wx.getLocation fail', ...err })
-        showToast('getLocation定位获取失败，请稍后再试')
+        showToast({ title: '定位获取失败，请打开右上角-设置-允许位置', icon: 'none' })
         reject()
       },
     })
@@ -91,7 +91,7 @@ async function getAuthorize() {
       onLocationChangeError(function (errCode) {
         console.log(1000)
         console.log({ logType: 'onLocationChangeError ==', errCode })
-        showToast('定位获取失败，请稍后再试')
+        showToast({ title: '定位获取失败，请稍后再试', icon: 'none' })
         reject()
       })
     }
@@ -105,7 +105,7 @@ async function getLocal(latitude, longitude, setGlobal) {
     return false
   }
   if (!(latitude && longitude)) {
-    showToast('无法获取经纬度信息')
+    showToast({ title: '无法获取经纬度信息', icon: 'none' })
     return false
   }
   return new Promise((resolve, reject) => {
@@ -139,7 +139,7 @@ async function getLocal(latitude, longitude, setGlobal) {
       fail(err) {
         const { status } = err
         console.log({ logType: ' qqMapSdk.reverseGeocoder fail', ...err })
-        showToast('定位获取失败，请稍后再试!')
+        showToast({ title: '定位获取失败，请稍后再试!', icon: 'none' })
         if (status === 120 || status === 121) {
           getRefreshMapKey()
         }
@@ -151,14 +151,14 @@ async function getLocal(latitude, longitude, setGlobal) {
 
 async function getOpenSetting(resolve) {
   console.log(111)
-  const workType = await noneWorkType()
-  if (!workType) {
-    return
-  }
-  const Gps = await openGps()
-  if (!Gps) {
-    return
-  }
+  // const workType = await noneWorkType()
+  // if (!workType) {
+  //   return
+  // }
+  // const Gps = await openGps()
+  // if (!Gps) {
+  //   return
+  // }
   console.log(222)
   getSetting({
     success(res) {
@@ -186,7 +186,7 @@ async function openGps() {
   // 打开Gps
   const locationEnabled = await uIsGps()
   if (locationEnabled === false) {
-    showToast('请打开手机GPS定位.....')
+    showToast({ title: '请打开手机GPS定位.....', icon: 'none' })
     return false
   }
   return true
@@ -196,7 +196,7 @@ async function noneWorkType() {
   // 没有网络
   const getWorkType = await uIsNetworkType()
   if (getWorkType === 'none') {
-    showToast('当前无网络，请稍后再试')
+    showToast({ title: '当前无网络，请稍后再试', icon: 'none' })
     return false
   }
   return true
@@ -218,7 +218,7 @@ async function getLatLon(address, region, level) {
         reslove(res)
       },
       fail({ status }) {
-        showToast('经纬度获取失败')
+        showToast({ title: '经纬度获取失败', icon: 'none' })
         if (status === 120 || status === 121) {
           getRefreshMapKey(status)
         }
