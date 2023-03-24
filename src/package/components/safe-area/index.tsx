@@ -86,7 +86,6 @@ const SafeArea: FC<Props> = (props) => {
           id='safe_area'
           className={classNames(`safe-area-${location}-${position}`, className)}
           style={{
-            ...style,
             ...(location === 'bottom'
               ? safeBottom
                 ? safeAreaBottomPadding
@@ -94,6 +93,7 @@ const SafeArea: FC<Props> = (props) => {
               : isBarHeight
               ? topPadding
               : safeAreaTopPadding),
+            ...style,
           }}
         >
           {props.children}

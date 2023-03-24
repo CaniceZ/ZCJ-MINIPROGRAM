@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
 import type { RequestConfig } from './types'
+import { loginWx } from '@/api/user'
 
 // const APP_NAME = 'ygp-yxg-miniprogram'
 
@@ -128,13 +129,32 @@ function checkStatus(status: RequestStatus, msg: string): void {
     // 401: 无接口权限
     case 401:
       errMessage = msg || '没有权限访问'
+      // storage.clear()
+      Taro.login({
+        success(res) {
+          console.log(res.code, 898989)
+          if (res.code) {
+            //发起网络请求
+            loginWx({ code: res.code, appCode: 1, sourceChannel: 1, userType: 1 }).then((data) => {
+              console.log('request:settoken')
+              storage.set('token', data.token)
+              storage.set('registerStatus', data.registerStatus)
+              Taro.switchTab({ url: '/pages/index/index' })
+              // }
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        },
+      })
+
       break
     // 403 一般为token过期出现
     case 403:
-      Taro.redirectTo({
-        url: '/pages/login/index',
-      })
-      storage.clear()
+      // Taro.redirectTo({
+      //   url: '/pages/login/index',
+      // })
+      Taro.redirectTo({ url: '/pages/login/index' })
       errMessage = msg || '登录过期,请重新登录！'
       break
     // 404请求不存在

@@ -7,14 +7,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: var(--button-height-small);
-    border-radius: var(--border-radius-md);
+    height: 50px;
+    border-radius: 4px;
     font-size: var(--font-size-sm);
-    color: #262626;
+    color: #BCBEC2;
     margin-right: 16px;
-    margin-bottom: 16px;
-    background: #f6f6f6;
-    border: 2px solid #f6f6f6;
+    margin-bottom: 18px;
+    background: #fff;
+    border: 1px solid #BCBEC2;
+    padding: 8px 15px;
+    font-size: 24px;
   }
 
   .check-item-row-2 {
@@ -37,8 +39,11 @@
   }
 
   .item-active {
-    background: rgba(254, 95, 35, 0.1);
     border-color: var(--color-primary);
     color: var(--color-primary);
+    background-image: url('../../../assets/icon/check-select.png');
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-size: 22px 16px;
   }
 }

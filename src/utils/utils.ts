@@ -82,7 +82,7 @@ export function uIsNetworkType() {
 
 // 未登录跳转
 export function checkLoginAndRedirect() {
-  if (!storage.get('token')) {
+  if (storage.get('registerStatus') == 0) {
     showToast({ title: '前往登录...', icon: 'none' })
     redirectTo({ url: '/pages/login/index' })
     return false
@@ -93,7 +93,7 @@ export function checkLoginAndRedirect() {
 
 // 未认证跳转
 export function checkRealnameAndRedirect() {
-  if (!storage.get('token')) {
+  if (storage.get('registerStatus') == 1) {
     showToast({ title: '前往认证...', icon: 'none' })
     redirectTo({ url: '/subpackages/realname/info/index' })
   }

@@ -2,6 +2,7 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/task/index',
+    'pages/order/index',
     'pages/about/index',
     'pages/login/index',
     'pages/getPhoneNumber/index',
@@ -62,8 +63,14 @@ export default defineAppConfig({
       {
         text: '任务',
         pagePath: 'pages/task/index',
-        iconPath: './assets/icon/home-index.png',
-        selectedIconPath: './assets/icon/home-index-active.png',
+        iconPath: './assets/icon/task-index.png',
+        selectedIconPath: './assets/icon/task-index-active.png',
+      },
+      {
+        text: '收益',
+        pagePath: 'pages/order/index',
+        iconPath: './assets/icon/order-index.png',
+        selectedIconPath: './assets/icon/order-index-active.png',
       },
       {
         text: '我的',

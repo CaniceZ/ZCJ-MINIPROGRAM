@@ -9,11 +9,11 @@ import ListView from './components/list-view'
 // import type { TabItemType } from './components/tabs'
 // import Popup from './components/popup'
 import SafeArea from './components/safe-area'
-// import Checkbox from './components/checkbox'
+import Checkbox from './components/checkbox'
 // import type { CheckOptionType } from './components/checkbox'
 // import Descriptions from './components/descriptions'
 // import DescriptionsItem from './components/descriptions/Item'
-// import Field from './components/field'
+import Field from './components/field'
 // import Textarea from './components/textarea'
 // import Switch from './components/switch'
 // import ConfigProvider from './components/config-provider'
@@ -25,7 +25,7 @@ import SafeArea from './components/safe-area'
 // import Button from './components/button'
 // import Calendar from './components/calendar'
 // import DatePicker from './components/date-picker'
-// import FooterArea from './components/footer-area'
+import FooterArea from './components/footer-area'
 
 export {
   // Cell,
@@ -37,10 +37,10 @@ export {
   // Tabs,
   // Popup,
   SafeArea,
-  // Checkbox,
+  Checkbox,
   // Descriptions,
   // DescriptionsItem,
-  // Field,
+  Field,
   // FormItemType,
   // TabItemType,
   // CheckOptionType,
@@ -55,5 +55,5 @@ export {
   // Button,
   // Calendar,
   // DatePicker,
-  // FooterArea,
+  FooterArea,
 }

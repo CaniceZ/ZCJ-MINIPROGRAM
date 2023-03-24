@@ -8,7 +8,7 @@ import './index.less'
 export default (props) => {
   const { visible, type, onClose, text, isNavigationBar = false } = props
   const typeMap = {
-    gzh: '长按识别二维码关注公众号',
+    gzh: '长按识别二维码,关注公众号',
     wx: '长按识别二维码添加微信',
   }
   const urlMap = {
@@ -24,22 +24,25 @@ export default (props) => {
       <Overlay lockScroll visible={visible2} zIndex={10000}>
         <div className='qr-wrapper' style={{ marginTop: isNavigationBar ? '50%' : '30%' }}>
           <div className='qr-wrapper-content'>
-            <Image
-              className='qrcode-image'
-              mode='aspectFit'
-              show-menu-by-longpress='true'
-              src={urlMap[type]}
-            ></Image>
+            <View className='qrcode-image-wrap'>
+              <Image
+                className='qrcode-image'
+                mode='aspectFit'
+                show-menu-by-longpress='true'
+                src={urlMap[type]}
+              ></Image>
+            </View>
             <View className='qrcode-desc'>{text || typeMap[type]}</View>
+            {type === 'gzh' && <View className='qrcode-subtitle'>轻松获取更多就业信息</View>}
             <Icon
               onClick={() => {
                 setVisible(false)
                 onClose()
               }}
               className='clear-btn'
-              size='50'
+              size='40'
               type='cancel'
-              color='#ccc'
+              color='#fff'
             />
           </div>
         </div>

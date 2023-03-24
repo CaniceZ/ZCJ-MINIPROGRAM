@@ -1,8 +1,8 @@
 {
-  "name": "ZCJ-MINIPROGRAM",
+  "name": "BG-MINIPROGRAM",
   "version": "1.0.0",
   "private": true,
-  "description": "兼职小程序",
+  "description": "帮工小程序",
   "templateInfo": {
     "name": "default",
     "typescript": true,

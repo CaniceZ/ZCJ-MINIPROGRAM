@@ -28,8 +28,14 @@ export default () => {
     {
       text: '任务',
       pagePath: '/pages/task/index',
-      iconPath: '../assets/icon/home-index.png',
-      selectedIconPath: '../assets/icon/home-index-active.png',
+      iconPath: '../assets/icon/task-index.png',
+      selectedIconPath: '../assets/icon/task-index-active.png',
+    },
+    {
+      text: '订单',
+      pagePath: '/pages/order/index',
+      iconPath: '../assets/icon/order-index.png',
+      selectedIconPath: '../assets/icon/order-index-active.png',
     },
     {
       text: '我的',
@@ -42,8 +48,9 @@ export default () => {
     <Tabbar
       activeVisible={activeVisible}
       safeAreaInsetBottom
-      unactiveColor='#ccc'
-      activeColor='#333'
+      unactiveColor='#5B5C5D'
+      activeColor='#4D8FFF'
+      size='24'
       bottom
       onSwitch={tabSwitch}
     >

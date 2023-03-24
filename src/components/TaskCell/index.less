@@ -1,44 +1,58 @@
 .taskcell-wrap{
   background: #fff;
-  margin-bottom: 15px;
-  border-radius: 20px;
-  padding: 20px;
+  margin-bottom: 16px;
+  padding: 30px 30px 20px 30px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  &.active{
+    background: linear-gradient(180deg, #FFEDEA 0%, #FFFFFF 100%);
+  }
   .taskcell-top{
-    border-bottom: 1px solid #efefef;
-    padding: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     .taskcell-top-title{
       display: flex;
       justify-content: space-between;
-      font-weight: 700;
-      .taskcell-top-left{
-        font-size: 40px;
+      font-weight: 500;
+      font-size: 32px;
+      margin-left: -30px;
+      padding-left: 28px;
+      border-left: 4px solid transparent;
+      &.warn-bl{
+        border-left: 4px solid var(--color-error);
       }
       .taskcell-top-right{
-        font-size: 30px;
+        color: var(--color-primary);
+        &-warn{
+          color: var(--color-error);
+        }
       }
     }
     .taskcell-time{
-      color: #ccc;
-      font-size: 26px;
-      margin-top: 10px;
+      color: var(--color-grey-1);
+      font-size: 28px;
+      margin-top: 20px;
+      line-height: 42px;
     }
   }
   .taskcell-bot{
     .taskcell-bot-list{
       display: flex;
       .taskcell-bot-item{
-        width: 25%;
+        width: 24%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 8px;
         .taskcell-bot-item-top{
-          margin-bottom: 5px;
+          line-height: 42px;
+          font-size: 28px;
+          color: var(--color-grey-0);
         }
         .taskcell-bot-item-bottom{
-          color: #ccc;
-          font-size: 28px;
+          color: var(--color-error);
+          font-size: 38px;
         }
       }
     }

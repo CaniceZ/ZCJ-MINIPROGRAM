@@ -51,6 +51,7 @@ const CheckBox: FC<CheckboxProps> = (props) => {
           onChange([...value, item[mergedFieldMaps.value]], item)
         }
       } else {
+        if (!isMultiple) return
         let arr: (string | number)[] = []
         for (let i = 0; i < value.length; i++) {
           if (value[i] == item[mergedFieldMaps.value]) {
@@ -73,7 +74,7 @@ const CheckBox: FC<CheckboxProps> = (props) => {
           style={
             value.length && value.some((ac) => ac == item[mergedFieldMaps.value]) ? activeStyle : ''
           }
-          className={classNames('check-item', `check-item-row-${columnNum}`, {
+          className={classNames('check-item', {
             'item-active': value.length && value.some((ac) => ac == item[mergedFieldMaps.value]),
           })}
           onClick={() => itemClick(item)}

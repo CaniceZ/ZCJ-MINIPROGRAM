@@ -30,6 +30,7 @@ export default () => {
               }).then((data2) => {
                 console.log(data2, 877)
                 storage.set('token', data2)
+                storage.set('registerStatus', data2.registerStatus)
                 toHome()
               })
             } else {
