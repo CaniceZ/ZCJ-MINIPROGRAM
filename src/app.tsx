@@ -26,7 +26,7 @@ export default ({ children }) => {
             if (data.registerStatus === 0) {
               navigateTo({ url: '/pages/login/index' })
             } else {
-              switchTab({ url: '/pages/index/index' })
+              // switchTab({ url: '/pages/index/index' })
             }
           })
         } else {

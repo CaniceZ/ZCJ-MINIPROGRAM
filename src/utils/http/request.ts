@@ -2,7 +2,9 @@ import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
 import type { RequestConfig } from './types'
 import { loginWx } from '@/api/user'
-
+// import store from '@/store'
+// import { setDotVisible } from '@/store/tabbar'
+// store.dispatch(setDotVisible(true))
 // const APP_NAME = 'ygp-yxg-miniprogram'
 
 type RequestStatus = 0 | 400 | 401 | 402 | 403 | 404 | 405 | 408 | 500 | 501 | 502 | 503 | 504 | 505
@@ -193,7 +195,6 @@ function checkStatus(status: RequestStatus, msg: string): void {
     icon: 'none',
   })
 }
-
 function createHttpRequest() {
   return new httpRequest({
     loading: true,
@@ -201,5 +202,4 @@ function createHttpRequest() {
     isReturnNativeResponse: false,
   })
 }
-
 export default createHttpRequest()

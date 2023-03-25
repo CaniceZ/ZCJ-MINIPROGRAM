@@ -36,6 +36,21 @@ export default () => {
       workDays: 2,
       jobTypeName: '服务员',
     },
+    {
+      merchantName: '网鱼电竞酒店2',
+      merchantTaskStatus: 40,
+      merchantTaskStatusName: '已完成',
+      serviceStartDate: '2023-03-16',
+      serviceEndDate: '2023-03-17',
+      shiftStartTime: '09:00',
+      shiftEndTime: '18:00',
+      daogangshijian: '8:30',
+      zonggongshi: 10,
+      personNum: 5,
+      workNum: 4,
+      workDays: 2,
+      jobTypeName: '服务员',
+    },
   ]
   return (
     <>

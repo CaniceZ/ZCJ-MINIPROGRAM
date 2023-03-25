@@ -1,7 +1,8 @@
 import { View } from '@tarojs/components'
-import { Button, Uploader, Input, Radio } from '@nutui/nutui-react-taro'
+import { Button, TextArea, Uploader } from '@nutui/nutui-react-taro'
 import useSetState from '@/hooks/useSetState'
 import { showToast } from '@tarojs/taro'
+import { Checkbox, Field } from '@/package'
 import './index.less'
 
 export default () => {
@@ -9,27 +10,34 @@ export default () => {
   const onStart = () => {
     console.log('start 触发')
   }
+  const typeStatus = [
+    { value: '2', label: '服务员' },
+    { value: '4', label: '传菜' },
+    { value: '1', label: '洗碗' },
+    { value: '3', label: '咨客' },
+    { value: '5', label: '打包员' },
+  ]
+  const onStatusChange = (active: string[]) => {
+    setState({
+      jobTypeList: active,
+      jobTypeNameList: typeStatus
+        .filter((item) => active.includes(item.value))
+        .map((item2) => item2.label),
+    })
+  }
   const [state, setState] = useSetState({
+    sex: '男', // 性别
     name: '郑创俊', // 姓名
     idcard: '12222333222222', // 身份证号
     bankcount: '', // 银行卡号
     tel: '', // 银行卡预留手机
-    type: '', // 擅长工作
+    jobTypeList: [], // 擅长工作
+    jobTypeNameList: [], // 擅长工作name
     age: '', // 工龄
     contactPeople: '', // 紧急联系人
     contactPhone: '', // 紧急联系人电话
+    remark: '', // 个人优势
   })
-  // 格式化工龄
-  const formmatAge = (value: string) => {
-    if (Number(value) > 100) {
-      setState({ age: '100' })
-      return 100
-    } else {
-      let newVal = value.replace(/^(\-)*(\d+)\.(\d).*$/, '$1$2.5')
-      setState({ age: newVal })
-      return newVal
-    }
-  }
   const submit = () => {
     console.log(state)
     if (!state.bankcount || state.bankcount.length < 13) {
@@ -38,7 +46,7 @@ export default () => {
     } else if (state.tel.length !== 11) {
       // 银行卡预留手机
       showToast({ title: '请输入正确的银行卡预留手机号', icon: 'none' })
-    } else if (!state.type) {
+    } else if (!state.jobTypeList[0]) {
       // 擅长工作
       showToast({ title: '请选择擅长工作', icon: 'none' })
     } else if (!state.age) {
@@ -69,118 +77,137 @@ export default () => {
           </View>
         </View>
       </View>
-      <View className='realname-wrap p10'>
-        <Input
+      <View className='realname-wrap pb0'>
+        <Field
+          name='sex'
+          labelWidth='80'
+          label='性别'
+          placeholder='请输入性别'
+          value={state.sex}
+          inputAlign='right'
+          readonly
+        />
+        <Field
           name='name'
+          labelWidth='80'
           label='姓名'
-          placeholder='姓名'
+          placeholder='请输入姓名'
+          value={state.name}
           inputAlign='right'
-          defaultValue={state.name}
           readonly
         />
-        <Input
+        <Field
           name='idcard'
+          labelWidth='80'
           label='身份证号码'
-          placeholder='身份证号码'
-          defaultValue={state.idcard}
+          placeholder='请输入身份证号码'
+          value={state.idcard}
           inputAlign='right'
-          type='text'
           readonly
         />
-        <Input
+        <Field
           name='bankcount'
+          labelWidth='80'
           label='银行卡'
           placeholder='请输入银行卡'
-          defaultValue={state.bankcount}
-          onChange={(value) => {
-            setState({ bankcount: value })
+          value={state.bankcount}
+          onChange={(e) => {
+            setState({ bankcount: e ? e.detail.value : '' })
           }}
           inputAlign='right'
           type='digit'
           maxlength={19}
+          clear={false}
         />
-        <Input
+        <Field
           name='tel'
           labelWidth='120'
           label='银行卡预留手机号'
           placeholder='请输入银行卡预留手机号'
-          defaultValue={state.tel}
-          onChange={(value) => {
-            console.log(value)
-            setState({ tel: value })
+          value={state.tel}
+          onChange={(e) => {
+            setState({ tel: e ? e.detail.value : '' })
           }}
           inputAlign='right'
           type='digit'
           maxlength={11}
-          border={false}
+          clear={false}
         />
       </View>
-      <View className='realname-wrap p10'>
-        <View className='nut-input nut-input-border'>
-          <View className='nut-input-label' style='width: 60px'>
+      <View className='realname-wrap pb0'>
+        <View className='wy-form-item pb0 pt0'>
+          <View className='wy-form-label' style='width: 80px'>
             擅长工作
           </View>
-          <View className='nut-input-value'>
-            <Radio.RadioGroup
-              value={state.type}
-              direction='horizontal'
-              onChange={(value: any) => {
-                setState({ type: value })
-              }}
-            >
-              <Radio shape='button' value='1'>
-                选项1
-              </Radio>
-              <Radio shape='button' value='2'>
-                选项2
-              </Radio>
-              <Radio shape='button' value='3'>
-                选项3
-              </Radio>
-              <Radio shape='button' value='4'>
-                选项4
-              </Radio>
-            </Radio.RadioGroup>
+          <View className='flex-r'>
+            <Checkbox value={state.jobTypeList} options={typeStatus} onChange={onStatusChange} />
           </View>
         </View>
-        <Input
+        <Field
           name='age'
+          labelWidth='120'
           label='工龄（年）'
           placeholder='请填写工作年限'
-          defaultValue={state.age}
+          value={state.age}
+          onChange={(e) => {
+            setState({ age: e ? e.detail.value : '' })
+          }}
+          min={18}
+          max={70}
           inputAlign='right'
-          formatter={formmatAge}
           type='number'
+          clear={false}
         />
-        <Input
+        <Field
           name='contactPeople'
+          labelWidth='120'
           label='紧急联系人'
           placeholder='请输入紧急联系人'
-          inputAlign='right'
-          defaultValue={state.contactPeople}
-          onChange={(value) => {
-            setState({ contactPeople: value })
+          value={state.contactPeople}
+          onChange={(e) => {
+            setState({ contactPeople: e ? e.detail.value : '' })
           }}
-          maxlength={50}
+          inputAlign='right'
+          maxlength={6}
+          clear={false}
         />
-        <Input
+        <Field
           name='contactPhone'
-          labelWidth='100'
+          labelWidth='120'
           label='紧急联系人电话'
           placeholder='请输入紧急联系人电话'
-          defaultValue={state.contactPhone}
-          onChange={(value) => {
-            setState({ contactPhone: value })
+          value={state.contactPhone}
+          onChange={(e) => {
+            setState({ contactPhone: e ? e.detail.value : '' })
           }}
           inputAlign='right'
           type='digit'
           maxlength={11}
-          border={false}
+          clear={false}
         />
+      </View>
+      <View className='realname-wrap'>
+        <View className='wy-form-item no-bottom'>
+          <View className='wy-form-label' style='width: 60px'>
+            个人优势
+          </View>
+        </View>
+        <View>
+          <TextArea
+            placeholder='请用几句话介绍自己吧，限200字'
+            maxlength='200'
+            limitshow
+            className='text-1'
+            style={{ fontSize: '12px' }}
+            onChange={(value) => {
+              setState({ remark: value })
+            }}
+          />
+        </View>
       </View>
       <View className='realname-bottom'>
         <View className='realname-bottom-btn'>
-          <Button block type='info' onClick={submit}>
+          <Button block type='primary' size='large' className='foot-btn' onClick={submit}>
             下一步
           </Button>
         </View>

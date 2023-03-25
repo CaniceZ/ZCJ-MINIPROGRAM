@@ -24,7 +24,7 @@ const TaskItem: FC<Props> = (props) => {
           src='https://t8.baidu.com/it/u=920319538,2894541429&fm=218&app=126&size=f242,150&n=0&f=JPEG&fmt=auto?s=DA003A641AF0A44F4E75548B0300E0C1&sec=1679677200&t=d928df375d194a0c7280076d1cd248d0'
         ></Image>
         <View className='task-jobname'>服务员</View>
-        <View className='task-image-mask'>已满</View>
+        <View className='task-image-mask'>已满员</View>
       </View>
       <View className='task-content'>
         <View className='task-title'>

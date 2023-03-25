@@ -2,12 +2,13 @@ import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // import { getDetail } from '@/api/user'
-import { UserType } from './types'
+// import { UserType } from './types'
 
 const name = 'user'
 
-const initialState: UserType = {
+const initialState = {
   token: '',
+  registerStatus: 0,
   info: {},
   enterpriseList: [],
   userType: undefined,

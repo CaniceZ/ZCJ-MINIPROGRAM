@@ -4,13 +4,17 @@ const slice = createSlice({
   name: 'tabbar',
   initialState: {
     activeVisible: 0,
+    dotVisible: false,
   },
   reducers: {
     setActiveVisible(state, { payload }) {
       state.activeVisible = payload
     },
+    setDotVisible(state, { payload }) {
+      state.dotVisible = payload
+    },
   },
 })
 
-export const { setActiveVisible } = slice.actions
+export const { setActiveVisible, setDotVisible } = slice.actions
 export default slice.reducer

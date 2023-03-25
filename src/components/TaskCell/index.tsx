@@ -14,7 +14,10 @@ const TaskCell: FC = (props) => {
         <View className={classNames('taskcell-top-title', { 'warn-bl': props.merchantTaskStatus == 10 })}>
           <View className='taskcell-top-left'>{props.merchantName}</View>
           <View
-            className={classNames('taskcell-top-right', { 'taskcell-top-right-warn': props.merchantTaskStatus == 10 })}
+            className={classNames('taskcell-top-right', {
+              'taskcell-top-right-warn': props.merchantTaskStatus == 10,
+              'taskcell-top-right-disable': [40, 50].includes(props.merchantTaskStatus),
+            })}
           >
             {props.merchantTaskStatusName}
           </View>

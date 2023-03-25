@@ -1,12 +1,13 @@
 import { Tabbar, TabbarItem } from '@nutui/nutui-react-taro'
 import { switchTab } from '@tarojs/taro'
 import { useAppSelector, useAppDispatch } from '@/hooks/useStore'
-import { setActiveVisible } from '@/store/tabbar'
+import { setActiveVisible, setDotVisible } from '@/store/tabbar'
 import { checkLoginAndRedirect } from '@/utils/utils'
 import './index.less'
 
 export default () => {
   const activeVisible = useAppSelector((state) => state.tabbar.activeVisible)
+  const dotVisible = useAppSelector((state) => state.tabbar.dotVisible)
   const dispatch = useAppDispatch()
   const tabSwitch = ({ props }, index) => {
     if (index === 0 || (index && checkLoginAndRedirect())) {
@@ -14,6 +15,9 @@ export default () => {
         url: props.href,
         success: () => {
           dispatch(setActiveVisible(index))
+          if (index === 1 && dotVisible) {
+            dispatch(setDotVisible(false))
+          }
         },
       })
     }
@@ -32,7 +36,7 @@ export default () => {
       selectedIconPath: '../assets/icon/task-index-active.png',
     },
     {
-      text: '订单',
+      text: '收益',
       pagePath: '/pages/order/index',
       iconPath: '../assets/icon/order-index.png',
       selectedIconPath: '../assets/icon/order-index-active.png',
@@ -56,6 +60,7 @@ export default () => {
     >
       {list.map((item, index) => (
         <TabbarItem
+          dot={index === 1 && dotVisible}
           key={item.text}
           tabTitle={item.text}
           href={item.pagePath}

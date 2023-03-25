@@ -18,6 +18,8 @@ import xiwangong from '@/assets/icon/xiwan.png'
 import xiwangongselect from '@/assets/icon/xiwan-select.png'
 import zike from '@/assets/icon/zike.png'
 import zikeselect from '@/assets/icon/zike-select.png'
+import dabaoyuan from '@/assets/icon/dabaoyuan.png'
+import dabaoyuanselect from '@/assets/icon/dabaoyuan-select.png'
 
 import './index.less'
 import { Icon } from '@nutui/nutui-react-taro'
@@ -46,7 +48,7 @@ export default () => {
     { value: '4', label: '传菜', url: chuancai, activeurl: chuancaiselect },
     { value: '1', label: '洗碗', url: xiwangong, activeurl: xiwangongselect },
     { value: '3', label: '咨客', url: zike, activeurl: zikeselect },
-    { value: '5', label: '打包员', url: zike, activeurl: zikeselect },
+    { value: '5', label: '打包员', url: dabaoyuan, activeurl: dabaoyuanselect },
   ])
   const { safeBottom } = useSafeBottom()
   // 公众号二维码
