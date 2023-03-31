@@ -23,6 +23,7 @@ export default ({ children }) => {
           loginWx({ code: res.code, appCode: 1, sourceChannel: 1, userType: 1 }).then((data) => {
             storage.set('token', data.token)
             storage.set('registerStatus', data.registerStatus)
+            storage.set('userVO', data.userVO)
             if (data.registerStatus === 0) {
               navigateTo({ url: '/pages/login/index' })
             } else {

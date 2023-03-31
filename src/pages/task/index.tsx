@@ -55,25 +55,22 @@ export default () => {
   return (
     <>
       <Tabs
+        className='task-tab'
         value={tab1value}
-        color='red'
+        color='#4D8FFF'
         background='#fff'
         onChange={({ paneKey }) => {
           setTab1value(paneKey)
         }}
       >
-        <Tabs.TabPane title='全部任务' className='bg-tab-pane'>
+        <Tabs.TabPane title='待处理' className='bg-tab-pane'>
           {listData.map((_, index) => (
             <TaskCell key={index} {..._}></TaskCell>
           ))}
         </Tabs.TabPane>
-        <Tabs.TabPane title='待开始' className='bg-tab-pane'>
+        <Tabs.TabPane title='全部' className='bg-tab-pane'>
           {' '}
           Tab 2{' '}
-        </Tabs.TabPane>
-        <Tabs.TabPane title='进行中' className='bg-tab-pane'>
-          {' '}
-          Tab 3{' '}
         </Tabs.TabPane>
         <Tabs.TabPane title='已完成' className='bg-tab-pane'>
           {' '}

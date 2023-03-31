@@ -15,6 +15,12 @@ export default () => {
     switchTab({ url: '/pages/index/index' })
     dispatch(setActiveVisible(0))
   }, [])
+  const handleClick = () => {
+    if (!checked) {
+      showToast({ title: '请先阅读并同意隐私政策及用户协议', icon: 'none' })
+      return false
+    }
+  }
   const handleGetPhoneNumber = (e) => {
     if (e.detail.errMsg === 'getPhoneNumber:ok') {
       getWxPhoneNumber({ code: e.detail.code }).then((data) => {
@@ -31,6 +37,7 @@ export default () => {
               }).then((data2) => {
                 storage.set('token', data2.token)
                 storage.set('registerStatus', data2.registerStatus)
+                storage.set('userVO', data2.userVO)
                 toHome()
               })
             } else {
@@ -54,19 +61,20 @@ export default () => {
       ></Image>
       <Button
         block
-        type='info'
-        className='m10'
-        open-type='getPhoneNumber'
+        type='success'
+        className='login-btn m10'
+        open-type={checked ? 'getPhoneNumber' : ''}
         onGetPhoneNumber={handleGetPhoneNumber}
+        onClick={handleClick}
       >
-        微信一键登录
+        微信授权登录
       </Button>
-      <Button block type='default' onClick={toHome}>
+      <Button className='login-btn' block type='default' onClick={toHome}>
         暂不登录
       </Button>
       <View className='agree-wrap'>
         <Checkbox
-          iconSize={20}
+          iconSize={18}
           checked={checked}
           onChange={(state) => {
             setChecked(state)

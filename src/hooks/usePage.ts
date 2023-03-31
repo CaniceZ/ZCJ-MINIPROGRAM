@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 export default function usePage(fn, opt?) {
   const option = {
     immediate: true,
-    limit: 20,
+    limit: 10,
     ...(opt || {}),
   }
   const [lists, setList] = useState([])
@@ -21,13 +21,13 @@ export default function usePage(fn, opt?) {
     }
     showLoading({ title: '数据加载中' })
     console.log({ limit: option.limit, page, ...formData }, '请求参数')
-    const { succeed, data } = await fn({ limit: option.limit, page, ...formData })
+    const data = await fn({ limit: option.limit, page, ...formData })
     if (!data) {
       hideLoading()
       return false
     }
-    if (data && data.length > 0) {
-      if (data.length === option.limit) {
+    if (data && data.list.length > 0) {
+      if (data.list.length === option.limit) {
         setPage((oldI) => oldI + 1)
       } else {
         isLast.current = true
@@ -38,9 +38,7 @@ export default function usePage(fn, opt?) {
           })
         }
       }
-      if (succeed) {
-        setList(lists.concat(data))
-      }
+      setList(lists.concat(data.list))
     }
     hideLoading()
   }
@@ -48,15 +46,16 @@ export default function usePage(fn, opt?) {
   const fetchData = async (form) => {
     isLast.current = false
     setPage(1)
+    setList([])
     showLoading({ title: '数据加载中' })
     console.log({ limit: option.limit, page, ...form }, '请求参数2')
-    const { succeed, data } = await fn({ limit: option.limit, page: 1, ...form })
+    const data = await fn({ limit: option.limit, page: 1, ...form })
     if (!data) {
       hideLoading()
       return false
     }
-    if (data && data.length > 0) {
-      if (data.length === option.limit) {
+    if (data && data.list.length > 0) {
+      if (data.list.length === option.limit) {
         setPage((oldI) => oldI + 1)
       } else {
         isLast.current = true
@@ -67,10 +66,8 @@ export default function usePage(fn, opt?) {
           })
         }
       }
-      if (succeed) {
-        setList(data || [])
-        setFormData(form)
-      }
+      setList(data.list || [])
+      setFormData(form)
     }
     hideLoading()
   }

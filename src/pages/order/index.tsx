@@ -1,113 +1,99 @@
-import { Icon } from '@nutui/nutui-react-taro'
 import { View } from '@tarojs/components'
-import { navigateTo, switchTab } from '@tarojs/taro'
-import storage from '@/utils/storage'
-import { useAppDispatch } from '@/hooks/useStore'
-import { setActiveVisible } from '@/store/tabbar'
-import QrcodePopup from '@/components/QrcodePopup'
-import { useState } from 'react'
+import { navigateTo } from '@tarojs/taro'
+import { useCallback } from 'react'
+import { Button } from '@nutui/nutui-react-taro'
 import './index.less'
 
 export default () => {
-  const dispatch = useAppDispatch()
-  const logout = () => {
-    storage.remove('token')
-    switchTab({ url: '/pages/index/index' })
-    dispatch(setActiveVisible(0))
-  }
-  const toRouter = (path: string) => {
-    navigateTo({ url: `/subpackages/setting/${path}/index` })
-  }
-  const [isShow, setIsShow] = useState(false)
+  const listData = [
+    {
+      helperSettlementCode: 'ST202303220001',
+      merchantName: '大鸽饭（棠下店）',
+      payDate: '2023-03-16 至 2023-03',
+      workDays: 2,
+      settlementTotalNum: 20,
+      workPrice: '18',
+      settlementAmount: '121.00',
+      helperAmount: '388',
+    },
+    {
+      helperSettlementCode: 'ST202303220002',
+      merchantName: '大鸽饭（棠下店）',
+      payDate: '2023-03-16 至 2023-03',
+      workDays: 2,
+      settlementTotalNum: 20,
+      workPrice: '18',
+      settlementAmount: '121.00',
+      helperAmount: '388',
+    },
+    {
+      helperSettlementCode: 'ST202303220003',
+      merchantName: '大鸽饭（棠下店）',
+      payDate: '2023-03-16 至 2023-03',
+      workDays: 2,
+      settlementTotalNum: 20,
+      workPrice: '18',
+      settlementAmount: '121.00',
+      helperAmount: '388',
+    },
+  ]
+  const goDetail = useCallback((helperSettlementCode) => {
+    console.log(helperSettlementCode)
+    navigateTo({
+      url: `/subpackages/task/orderdetail/index?helperSettlementCode=${helperSettlementCode}`,
+    })
+  }, [])
   return (
     <>
-      <View className='about-wrap'>
-        <View
-          className='about-item-wrap about-info'
-          onClick={() => {
-            toRouter('userinfo')
-          }}
-        >
-          <View className='about-label'>
-            <View className='about-info-username'>郑创俊</View>
-            <View className='about-info-phone'>
-              {'18819482438'.replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')}
+      {listData.map((item) => (
+        <View className='order-item' key={item.helperSettlementCode}>
+          <View className='order-code'>
+            <View className='w145'>任务ID：</View>
+            <View>{item.helperSettlementCode}</View>
+          </View>
+          <View className='order-content'>
+            <View className='order-conten-item'>
+              <View className='w145'>服务商家：</View>
+              <View className='order-conten-item-value'>{item.merchantName}</View>
+            </View>
+            <View className='order-conten-item'>
+              <View className='w145'>服务时间：</View>
+              <View className='order-conten-item-value'>{item.payDate}</View>
+            </View>
+            <View className='order-conten-item'>
+              <View className='w145'>服务天数：</View>
+              <View className='order-conten-item-value'>{item.workDays}</View>
+            </View>
+            <View className='order-conten-item'>
+              <View className='w145'>总工时：</View>
+              <View className='order-conten-item-value'>{item.settlementTotalNum}小时</View>
+            </View>
+            <View className='order-conten-item'>
+              <View className='w145'>时薪：</View>
+              <View className='order-conten-item-value'>{item.workPrice}</View>
             </View>
           </View>
-          <View className='about-value'>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
+          <View className='order-bottom'>
+            <View className='order-bottom-top'>
+              <View className='order-total'>
+                <View>已收入</View>
+                <View className='order-total-num'>¥</View>
+                <View className='order-total-num fw'>{item.settlementAmount}</View>
+              </View>
+              <View className='color-grey-1'>预计收入：¥388</View>
+            </View>
+            <Button
+              type='primary'
+              className='foot-btn'
+              onClick={() => {
+                goDetail(item.helperSettlementCode)
+              }}
+            >
+              收益明细
+            </Button>
           </View>
         </View>
-      </View>
-      <View className='about-wrap'>
-        <View
-          className='about-item-wrap'
-          onClick={() => {
-            setIsShow(true)
-          }}
-        >
-          <View className='about-label'>安全中心</View>
-          <View className='about-value'>
-            <View className='about-value-text'>修改绑定手机</View>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
-          </View>
-        </View>
-      </View>
-      <View className='about-wrap doc-box'>
-        <View className='about-item-wrap p30'>
-          <View className='about-label'>意见反馈</View>
-          <View className='about-value'>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
-          </View>
-        </View>
-        <View
-          className='about-item-wrap p30'
-          onClick={() => {
-            toRouter('protocol')
-          }}
-        >
-          <View className='about-label'>用户协议</View>
-          <View className='about-value'>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
-          </View>
-        </View>
-        <View
-          className='about-item-wrap p30'
-          onClick={() => {
-            toRouter('privacy')
-          }}
-        >
-          <View className='about-label'>隐私政策</View>
-          <View className='about-value'>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
-          </View>
-        </View>
-        <View
-          className='about-item-wrap p30'
-          onClick={() => {
-            toRouter('aboutme')
-          }}
-        >
-          <View className='about-label'>关于我们</View>
-          <View className='about-value'>
-            <View className='about-value-text'>V1.0.1</View>
-            <Icon name='rect-right' size='16px' color='#ccc'></Icon>
-          </View>
-        </View>
-      </View>
-      <View className='about-wrap'>
-        <View className='about-logout' onClick={logout}>
-          退出登录
-        </View>
-      </View>
-      {/* 联系人二维码 */}
-      <QrcodePopup
-        visible={isShow}
-        type='wx'
-        onClose={() => {
-          setIsShow(false)
-        }}
-      ></QrcodePopup>
+      ))}
     </>
   )
 }

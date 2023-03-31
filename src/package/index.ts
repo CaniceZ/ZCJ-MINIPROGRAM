@@ -14,7 +14,7 @@ import Checkbox from './components/checkbox'
 // import Descriptions from './components/descriptions'
 // import DescriptionsItem from './components/descriptions/Item'
 import Field from './components/field'
-// import Textarea from './components/textarea'
+import Textarea from './components/textarea'
 // import Switch from './components/switch'
 // import ConfigProvider from './components/config-provider'
 // import Picker from './components/picker'
@@ -45,7 +45,7 @@ export {
   // TabItemType,
   // CheckOptionType,
   // PickerOptionType,
-  // Textarea,
+  Textarea,
   // Switch,
   // ConfigProvider,
   // Picker,

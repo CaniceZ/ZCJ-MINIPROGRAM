@@ -9,7 +9,7 @@ import http, { baseUrl } from '../utils/http/index'
  */
 export function loginWx(data) {
   return http.post({
-    url: `${baseUrl.uc}/user/wxLogin`,
+    url: `${baseUrl.banggong}/login/wechat`,
     data,
   })
 }

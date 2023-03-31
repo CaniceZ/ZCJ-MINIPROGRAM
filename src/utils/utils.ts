@@ -129,6 +129,13 @@ export function removeEmptyField(obj) {
   }
   return newObj
 }
+// 09:00:00 -> 09:00
+export function hms2hm(a) {
+  if (!a) return
+  var alist = a.split(':')
+  alist.splice(alist.length - 1, 1)
+  return alist.join(':')
+}
 
 // 未登录跳转
 export function checkLoginAndRedirect() {

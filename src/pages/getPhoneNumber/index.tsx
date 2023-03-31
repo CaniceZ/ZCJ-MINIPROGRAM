@@ -31,6 +31,7 @@ export default () => {
                 console.log(data2, 877)
                 storage.set('token', data2)
                 storage.set('registerStatus', data2.registerStatus)
+                storage.set('userVO', data2.userVO)
                 toHome()
               })
             } else {

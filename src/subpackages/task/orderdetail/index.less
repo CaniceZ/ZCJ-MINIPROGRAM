@@ -1,0 +1,136 @@
+page{
+  background: #F6F7FB;
+  font-size: 28px;
+  padding-bottom: 50px;
+}
+.common-title{
+  border-left: 7px solid var(--color-primary);
+  padding-left: 20px;
+  margin: 40px 24px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+}
+.bg-white{
+  background: #fff;
+}
+.order-code{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-grey-3);
+  font-weight: 500;
+  font-size: 32px;
+  padding: 30px;
+}
+.order-content{
+  padding: 25px 30px 0 30px;
+  border-bottom: 1px solid var(--color-grey-3);
+  .order-conten-item{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    .order-conten-item-value{
+      color: var(--color-grey-1);
+    }
+  }
+}
+.fw-content{
+  padding: 25px 30px 0 30px;
+  border-bottom: 1px solid var(--color-grey-3);
+  .fw-title, .fw-value{
+    display: flex;
+    margin-bottom: 20px;
+    View{
+      &:nth-of-type(1){
+        width: 33%
+      }
+      &:nth-of-type(2){
+        width: 14%
+      }
+      &:nth-of-type(3){
+        width: 16%;
+        text-align: center;
+      }
+      &:nth-of-type(4){
+        width: 27%
+      }
+    }
+  }
+  .fw-value{
+    font-size: 24px;
+    color: var(--color-grey-1);
+  }
+}
+.fw-item{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  .fw-bold{
+    font-weight: 500;
+  }
+}
+.fw-last{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 25px;
+  .fs24{
+    font-size: 24px;
+    margin-left: 10px;
+    color: var(--color-error);
+  }
+  .amount{
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--color-error);
+  }
+}
+.foot-btn{
+  border-radius: 16px;
+  font-size: 36px;
+}
+.bg-bottom{
+  display: flex;
+  align-items: center;
+  padding: 50px 94px;
+  width: 100%;
+  .bg-bottom-btn{
+    flex: 1;
+  }
+}
+.sy-wrap{
+  border-bottom: 1px solid var(--color-grey-3);
+  display: flex;
+  padding-bottom: 10px;
+  &:not(:first-child){
+    padding-top: 25px;
+  }
+  .sy-left{
+    width: 70%;
+  }
+  .sy-right{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    .sy-right-top{
+      display: flex;
+      color: var(--color-error);
+      font-size: 48px;
+      align-items: baseline;
+      &.no-receive{
+        color: var(--color-grey-0);
+      }
+      .fs24{
+        font-size: 24px;
+      }
+    }
+    .sy-right-normal{
+      font-size: 26px;
+      color: var(--color-grey-1);
+    }
+  }
+}

@@ -26,10 +26,10 @@ export default defineAppConfig({
       pages: [
         // 考勤列表
         'checklist/index',
-        // 考勤提交
-        'checksubmit/index',
         // 任务详情
         'detail/index',
+        // 收益明细
+        'orderdetail/index',
       ],
     },
     {

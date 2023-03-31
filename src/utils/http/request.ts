@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
-import type { RequestConfig } from './types'
 import { loginWx } from '@/api/user'
+import type { RequestConfig } from './types'
 // import store from '@/store'
 // import { setDotVisible } from '@/store/tabbar'
 // store.dispatch(setDotVisible(true))
@@ -30,7 +30,7 @@ class httpRequest {
   request<T = any>(options: Taro.request.Option, config?: RequestConfig): Promise<T> {
     const conf = Object.assign({}, this.defaultConfig, config)
     if (conf.loading) {
-      Taro.showLoading()
+      Taro.showLoading({ title: '加载中' })
     }
     const opt = requestInterceptor(options)
     return new Promise<T>((resolve) => {
@@ -141,7 +141,8 @@ function checkStatus(status: RequestStatus, msg: string): void {
               console.log('request:settoken')
               storage.set('token', data.token)
               storage.set('registerStatus', data.registerStatus)
-              Taro.switchTab({ url: '/pages/index/index' })
+              storage.set('userVO', data.userVO)
+              // Taro.switchTab({ url: '/pages/index/index' })
               // }
             })
           } else {

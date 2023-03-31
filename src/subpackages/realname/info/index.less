@@ -7,22 +7,25 @@ page{
   padding: 30px 20px;
   font-size: 28px;
 }
-.upload-tit{
-  margin-bottom: 30px;
-}
 .upload-wrap{
   display: flex;
   gap: 30px;
+  padding-top: 30px;
   .upload-item{
     flex: 1;
-    .upload-handle{
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .upload-txt{
+    display: flex;
+    justify-content: center;
+    .wy-upload-footer{
       text-align: center;
+      text-indent: 0;
     }
   }
+}
+.upload-error{
+  color: var(--color-error);
+  padding-left: 32px;
+  font-size: 30px;
+  margin-top: 5px;
 }
 .wy-form-item{
   border-bottom: 2px solid var(--color-grey-3);

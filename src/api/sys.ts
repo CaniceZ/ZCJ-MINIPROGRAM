@@ -1,24 +1,19 @@
 import http, { baseUrl } from '../utils/http/index'
 
 // 获取用户详情
-export const listArea = () => {
-  return http.post({ url: `${baseUrl.area}/listProvincesTree` })
-}
-
-export const getTokens = (data) => {
+export const attachmentUpload = (data) => {
   return http.request({
-    url: `${baseUrl.sys}/king/file/filesystem/getUploadTokenMap`,
+    url: `${baseUrl.banggong}/attachment/upload`,
     method: 'POST',
     data,
   })
 }
 
-export const getPrivateUrls = (data) => {
-  return http.get({ url: `${baseUrl.sys}/king/file/filesystem/getPrivateDownloadUrls`, data })
-}
-
-export const getBciscmPrivateUrl = (privateFileKey) => {
-  return http.get({
-    url: `${baseUrl.bciscm}/upload/getPrivateDownloadUrl?privateFileKey=${privateFileKey}`,
+// 查询全部有效工种
+export const listJobType = (data) => {
+  return http.request({
+    url: `${baseUrl.banggong}/dict/listJobType`,
+    method: 'GET',
+    data,
   })
 }

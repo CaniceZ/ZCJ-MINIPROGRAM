@@ -6,10 +6,14 @@ import QrcodePopup from '@/components/QrcodePopup'
 import usePage from '@/hooks/usePage'
 import SafeArea from '@/package/components/safe-area'
 import useSafeBottom from '@/package/hooks/useSafeBottom'
-import { usePullDownRefresh, stopPullDownRefresh } from '@tarojs/taro'
+import { usePullDownRefresh, stopPullDownRefresh, useDidShow } from '@tarojs/taro'
+import { pageMerchantTask } from '@/api/task'
+import { listJobType } from '@/api/sys'
+import { getTodoTask } from '@/api/info'
+import { Icon } from '@nutui/nutui-react-taro'
 import homeTitleImg from '@/assets/imgs/home-title-img.png'
-import TaskItem from '../../components/TaskItem'
 import classNames from 'classnames'
+import storage from '@/utils/storage'
 import fuwuyuan from '@/assets/icon/fuwuyuan.png'
 import fuwuyuanselect from '@/assets/icon/fuwuyuan-select.png'
 import chuancai from '@/assets/icon/chuancai.png'
@@ -20,36 +24,25 @@ import zike from '@/assets/icon/zike.png'
 import zikeselect from '@/assets/icon/zike-select.png'
 import dabaoyuan from '@/assets/icon/dabaoyuan.png'
 import dabaoyuanselect from '@/assets/icon/dabaoyuan-select.png'
-
+import TaskItem from '../../components/TaskItem'
 import './index.less'
-import { Icon } from '@nutui/nutui-react-taro'
 
-const data = Array(63)
-  .fill({})
-  .map((item) => {
-    return {
-      id: Math.random() * 100,
-    }
-  })
-const fetcher2 = async (params) => {
-  // console.log('params', params)
-  const { page, limit } = params
-  let arr = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data.slice((page - 1) * limit, page * limit))
-    }, 1000)
-  })
-  return { succeed: true, data: arr, total: 111 }
+type StatusMap = {
+  dictCode: string
+  dictName: string
+  url: string | undefined
+  activeurl: string | undefined
 }
+const urlMap = [
+  { jobType: '1', jobTypeName: '服务员', url: fuwuyuan, activeurl: fuwuyuanselect },
+  { jobType: '3', jobTypeName: '传菜', url: chuancai, activeurl: chuancaiselect },
+  { jobType: '5', jobTypeName: '洗碗', url: xiwangong, activeurl: xiwangongselect },
+  { jobType: '4', jobTypeName: '咨客', url: zike, activeurl: zikeselect },
+  { jobType: '2', jobTypeName: '打包员', url: dabaoyuan, activeurl: dabaoyuanselect },
+]
 
 export default () => {
-  const [quotationStatus] = useState([
-    { value: '2', label: '服务员', url: fuwuyuan, activeurl: fuwuyuanselect },
-    { value: '4', label: '传菜', url: chuancai, activeurl: chuancaiselect },
-    { value: '1', label: '洗碗', url: xiwangong, activeurl: xiwangongselect },
-    { value: '3', label: '咨客', url: zike, activeurl: zikeselect },
-    { value: '5', label: '打包员', url: dabaoyuan, activeurl: dabaoyuanselect },
-  ])
+  const [quotationStatus, setQuotationStatus] = useState<StatusMap[]>([])
   const { safeBottom } = useSafeBottom()
   // 公众号二维码
   const [isShow, setIsShow] = useState(false)
@@ -60,6 +53,20 @@ export default () => {
     parentCode?: Number
     childAreas?: Array<City>
   }
+  type InfoType = {
+    merchantCode: string
+    merchantName: string
+    merchantTaskCode: string
+    merchantTaskStatus: number
+    merchantTaskStatusName: string
+    serviceEndDate: string
+    serviceStartDate: string
+    servicedDay: number
+    totalWorkNum: number
+    workDays: number
+    workNum: number
+    workPrice: number
+  }
   // 当前城市
   const [initCity, setInitCity] = useState<City>()
   // 打开定位
@@ -69,7 +76,7 @@ export default () => {
     }
   }
   // 工作类型
-  const { lists, fetchData } = usePage(fetcher2, { limit: 20 })
+  const { lists, fetchData } = usePage(pageMerchantTask, { limit: 10 })
   usePullDownRefresh(() => {
     console.log('onPullDownRefresh')
     location.getMap().then((res) => {
@@ -78,40 +85,51 @@ export default () => {
     })
     stopPullDownRefresh()
   })
-  const taskinfo = {
-    merchantName: '网鱼电竞酒店',
-    merchantTaskStatus: 10,
-    merchantTaskStatusName: '待开始',
-    serviceStartDate: '2023-03-16',
-    serviceEndDate: '2023-03-17',
-    shiftStartTime: '09:00',
-    shiftEndTime: '18:00',
-    daogangshijian: '8:30',
-    zonggongshi: 10,
-    personNum: 5,
-    workNum: 4,
-    workDays: 2,
-    jobTypeName: '服务员',
-  }
-
+  const [taskinfo, setTaskInfo] = useState<Partial<InfoType>>({})
   useEffect(() => {
-    location.getMap().then((res) => {
-      setInitCity({ name: res.address_component.city })
-      fetchData(handleApi({ initCity: { name: res.address_component.city } }))
+    listJobType({}).then((data) => {
+      data.forEach((item) => {
+        item.url = urlMap.find((item2) => item2.jobType === item.dictCode)?.url
+        item.activeurl = urlMap.find((item2) => item2.jobType === item.dictCode)?.activeurl
+      })
+      setQuotationStatus(data)
     })
   }, [])
+  useDidShow(() => {
+    if (storage.get('token')) {
+      location.getMap().then((res) => {
+        setInitCity({ name: res.address_component.city })
+        fetchData(handleApi({ city: res.address_component.city }))
+      })
+      getTodoTask({}).then((data) => {
+        if (data) {
+          setTaskInfo(data)
+        }
+      })
+    } else {
+      setTimeout(() => {
+        location.getMap().then((res) => {
+          setInitCity({ name: res.address_component.city })
+          fetchData(handleApi({ city: res.address_component.city }))
+        })
+        getTodoTask({})
+      }, 1000)
+    }
+  })
   // 工种类型修改
-  const [jobType, setType] = useState('2')
+  const [jobType, setType] = useState('1')
   const selectType = (item) => {
-    setType(item.value)
+    setType(item.dictCode)
     fetchData(handleApi({ jobType: item.value })) // 改动的字段
   }
   // 解决setstate异步问题，获取最新的值
   const handleApi = (changeParams = {}) => {
     const queryData = {
       jobType,
-      initCity,
+      city: initCity?.name,
       ...changeParams,
+      latitude: storage.get('localAddress')?.latitude,
+      longitude: storage.get('localAddress')?.longitude,
     }
     return queryData
   }
@@ -151,9 +169,9 @@ export default () => {
             {quotationStatus.map((item) => (
               <View
                 className={classNames('type-item', {
-                  'type-item-active': item.value == jobType,
+                  'type-item-active': item.dictCode == jobType,
                 })}
-                key={item.value}
+                key={item.dictCode}
                 onClick={() => {
                   selectType(item)
                 }}
@@ -161,15 +179,15 @@ export default () => {
                 <Image
                   className='type-item-image'
                   mode='aspectFit'
-                  src={item.value == jobType ? item.activeurl : item.url}
+                  src={item.dictCode == jobType ? item.activeurl : item.url}
                 ></Image>
-                <View className='type-item-text'>{item.label}</View>
+                <View className='type-item-text'>{item.dictName}</View>
               </View>
             ))}
           </View>
         </ScrollView>
-        {lists.map((_, index) => (
-          <TaskItem key={index} index={index}></TaskItem>
+        {lists.map((item) => (
+          <TaskItem key={item.merchantTaskCode} {...item}></TaskItem>
         ))}
         <View style={{ height: safeBottom + 48 + 'px' }}></View>
       </View>

@@ -7,9 +7,10 @@ export type RequestConfig = {
 export type BaseUrl = {
   java
   uc
-  bciscm
   area
   sys
   crm
   wx
+  banggong
+  merchant
 }

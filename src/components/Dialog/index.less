@@ -1,0 +1,39 @@
+.dialog-wrapper {
+  display: flex;
+  margin-top: 150px;
+  justify-content: center;
+  .dialog-wrapper-content{
+    width: 598px;
+    min-height: 360px;
+    padding: 50px 65px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    line-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-danger{
+      background: linear-gradient(180deg, #FFEDEA 0%, #FFFFFF 100%);
+    }
+    .desc{
+      font-size: 28px;
+      color: var(--color-grey-1);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+  }
+}
+.dialog-wrapper-title{
+  font-size: 32px;
+  text-align: center;
+  height: 48px;
+  margin-bottom: 18px;
+}
+.foot-btn{
+  display: flex;
+  justify-content: space-between;
+  .round-btn{
+    border-radius: 8px;
+    padding: 0 50px;
+  }
+}
