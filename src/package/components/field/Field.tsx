@@ -7,6 +7,8 @@ import FieldWrap from './FieldWrap'
 
 export interface FieldProps extends InputProps {
   type?: any
+  /** 最大输入限制----解决IOS原生输入框拼音输入bug, 非文本输入框用maxlength */
+  textMaxLength: number
   /** 自定义className */
   className?: string
   /** label文案 */
@@ -64,7 +66,7 @@ export interface FieldProps extends InputProps {
 }
 
 const Field: FC<FieldProps> = (props): ReactElement => {
-  const { type, min, max, precision, readonly } = props
+  const { type, min, max, precision, readonly, textMaxLength } = props
   return (
     <FieldWrap {...props}>
       {(fieldProps) => {
@@ -88,9 +90,19 @@ const Field: FC<FieldProps> = (props): ReactElement => {
             } else {
               e.detail.value = undefined
             }
-            onChange?.(e)
+            onChangeHandle?.(e)
           }
           onBlur?.(e)
+        }
+        const onChangeHandle = (e) => {
+          if ((type === 'text' || !type) && textMaxLength) {
+            let text = e.detail.value.trim()
+            let detail2 = text.length > textMaxLength ? text.substring(0, textMaxLength) : text
+            e.detail.value = detail2
+            onChange?.(e)
+          } else {
+            onChange?.(e)
+          }
         }
         return (
           <>
@@ -102,7 +114,7 @@ const Field: FC<FieldProps> = (props): ReactElement => {
                 type={type}
                 {...restFieldProps}
                 onBlur={handelBlur}
-                onInput={onChange}
+                onInput={onChangeHandle}
                 style={{ height: '100%', width: '100%' }}
               />
             )}

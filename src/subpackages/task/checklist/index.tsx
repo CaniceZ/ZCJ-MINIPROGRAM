@@ -1,42 +1,77 @@
 import { Button, Icon } from '@nutui/nutui-react-taro'
 import { Input, View } from '@tarojs/components'
-import { navigateBack, showToast } from '@tarojs/taro'
+import { navigateBack, showToast, useDidShow, useRouter } from '@tarojs/taro'
 import { useCallback, useState } from 'react'
 import useSetState from '@/hooks/useSetState'
 import classNames from 'classnames'
 import NoData from '@/components/NoData'
 import Dialog from '@/components/Dialog'
+import { pageHelperTaskItem, helperClockIn } from '@/api/attendance'
+import storage from '@/utils/storage'
 import './index.less'
 
 export default () => {
-  const listData = [
-    { helperTaskItemCode: 123 },
-    { helperTaskItemCode: 321 },
-    { helperTaskItemCode: 234 },
-  ]
+  const [list, setList] = useState<any>([])
+  const {
+    params: { merchantTaskCode },
+  } = useRouter()
+  useDidShow(() => {
+    pageHelperTaskItem({
+      merchantTaskCode,
+      helperCode: storage.get('helperCode'),
+      page: 1,
+      limit: 300,
+    }).then((data) => {
+      setList(data.list)
+    })
+  })
   const [info, seInfo] = useSetState<any>({})
   // 填写考勤弹窗
   const [dialogVisible, setDialogVisible] = useState(false)
-  const confirm = () => {
+  const confirm = async () => {
     console.log(info)
-    if (!/^[+]?\d+(\.5+([0]*)?)?$/.test(info.workNum)) {
+    if (!info.actualWorkload) {
+      showToast({ title: '工时不能为0', icon: 'none' })
+      return false
+    }
+    if (!/^[+]?\d+(\.5+([0]*)?)?$/.test(info.actualWorkload)) {
       showToast({ title: '工时最小单位为0.5小时', icon: 'none' })
       return false
     }
+    if (info.actualWorkload > 24) {
+      showToast({ title: '工时不能超过24小时', icon: 'none' })
+      return false
+    }
     const subData = {
-      actualWorkload: info.workNum,
+      actualWorkload: Number(info.actualWorkload),
       helperCode: info.helperCode,
       helperTaskItemCode: info.helperTaskItemCode,
     }
-    console.log(subData)
-    setDialogVisible(false)
+    await helperClockIn(subData)
+    showToast({
+      title: '操作成功',
+      icon: 'none',
+      success() {
+        setTimeout(() => {
+          setDialogVisible(false)
+          pageHelperTaskItem({
+            merchantTaskCode,
+            helperCode: storage.get('helperCode'),
+            page: 1,
+            limit: 300,
+          }).then((data) => {
+            setList(data.list)
+          })
+        }, 1000)
+      },
+    })
   }
   const onCancel = () => {
     console.log('cancel')
     setDialogVisible(false)
   }
   const goDetail = useCallback((item) => {
-    seInfo(item)
+    seInfo({ ...item, actualWorkload: 0 })
     setDialogVisible(true)
   }, [])
 
@@ -44,21 +79,19 @@ export default () => {
     navigateBack()
   }
   const inputChange = (e) => {
-    const num = Number(e.detail.value)
-    console.log(num)
-    seInfo({ workNum: num })
+    seInfo({ actualWorkload: e.detail.value })
   }
   return (
     <>
       <View className='chcecklist-wrap'>
-        {listData.length > 0 ? (
-          listData.map((item, index) => (
+        {list.length > 0 ? (
+          list.map((item, index) => (
             <View key={index} className='checklist-item'>
-              <View className='checklist-item-time'>2024-02-24</View>
+              <View className='checklist-item-time'>{item.serviceDate?.split(' ')[0]}</View>
               <View className='checklist-item-content'>
-                <View className='checklist-item-content-main'>5</View>
+                <View className='checklist-item-content-main'>{item.actualWorkload}</View>
                 <View className='checklist-item-content-remark'>小时</View>
-                {index % 2 && (
+                {item.helperTaskItemStatus !== 30 && item.helperTaskItemStatus !== 50 && (
                   <Icon
                     name='edit'
                     color='#4D8FFF'
@@ -71,11 +104,12 @@ export default () => {
               </View>
               <View
                 className={classNames('checklist-item-status', {
-                  warn: index % 2,
-                  error: index === 2,
+                  warn: item.helperTaskItemStatus === 20,
+                  error: item.helperTaskItemStatus === 40,
+                  success: item.helperTaskItemStatus === 10,
                 })}
               >
-                已确认
+                {item.helperTaskItemStatusName}
               </View>
             </View>
           ))
@@ -91,7 +125,7 @@ export default () => {
         </View>
       </View>
       <Dialog
-        title='2023-02-24服务工时'
+        title={info.serviceDate?.split(' ')[0] + '服务工时'}
         visible={dialogVisible}
         onConfirm={confirm}
         onCancel={onCancel}
@@ -100,10 +134,11 @@ export default () => {
           <Input
             className='kq-input'
             type='digit'
-            // onInput={inputChange}
-            onBlur={inputChange}
+            onInput={inputChange}
+            // onBlur={inputChange}
             placeholder='请输入工时'
-            value={info.workNum}
+            maxlength={4}
+            value={info.actualWorkload}
           />
           <View className='kq-danwei'>小时</View>
         </View>

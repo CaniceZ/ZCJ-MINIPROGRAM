@@ -7,6 +7,7 @@ import './index.less'
 export type DialogProps = {
   visible: Boolean
   title: String
+  revertBtn?: Boolean
   onCancel: () => void
   onConfirm: () => void
   isNavigationBar?: Boolean
@@ -20,6 +21,7 @@ export default (props: DialogProps) => {
   const {
     visible,
     title = '提醒',
+    revertBtn = false,
     onCancel,
     onConfirm,
     isNavigationBar,
@@ -45,7 +47,11 @@ export default (props: DialogProps) => {
               <View className='dialog-wrapper-title'>{title}</View>
               <View className='desc'>{children}</View>
             </View>
-            <View className='foot-btn'>
+            <View
+              className={classNames('foot-btn', {
+                'foot-btn-revert': revertBtn,
+              })}
+            >
               <Button
                 onClick={onCancel}
                 className='round-btn'

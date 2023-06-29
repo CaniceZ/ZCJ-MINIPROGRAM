@@ -35,3 +35,12 @@ export const pageHelperTaskItem = (data) => {
     data,
   })
 }
+
+// 帮工进入任务详情，帮工考勤状态汇总
+export const getHelperTaskItemStatus = (data) => {
+  return http.request({
+    url: `${baseUrl.banggong}/attendance/getHelperTaskItemStatus`,
+    method: 'GET',
+    data,
+  })
+}

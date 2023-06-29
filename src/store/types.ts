@@ -38,7 +38,7 @@ export enum UserTypeEnum {
 
 export type UserType = {
   token: string
-  info: Partial<UserInfoType>
-  enterpriseList: any[]
-  userType?: `${UserTypeEnum}`
+  // info: Partial<UserInfoType>
+  // enterpriseList: any[]
+  // userType?: `${UserTypeEnum}`
 }

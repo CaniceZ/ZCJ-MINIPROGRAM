@@ -5,26 +5,26 @@ import type { BaseUrl } from './types'
 const { envVersion } = Taro.getAccountInfoSync().miniProgram
 // 线上版本，不允许修改
 const release: any = {
-  java: 'https://api.yigongpin.com/api/',
+  java: 'https://wx.51ptj.com/',
 }
 
 // 体验版环境，可修改
 const trial: any = {
-  java: 'https://gateway-uat.yigongpin.net/api/',
+  java: 'https://wx-dev.51ptj.com/',
 }
 
 // Java微服务
-const services = ['uc', 'wx', 'sys', 'banggong', 'merchant', 'area', 'sys', 'crm']
+const services = ['uc', 'wx', 'sys', 'banggong', 'merchant', 'area', 'crm']
 
 function getBaseURL(): BaseUrl {
   if (envVersion === 'release') {
     return services.reduce((r, s) => {
-      r[s] = `${r.java}${s}/`
+      r[s] = `${r.java}${s}`
       return r
     }, release)
   } else if (envVersion === 'trial') {
     return services.reduce((r, s) => {
-      r[s] = `${r.java}${s}/`
+      r[s] = `${r.java}${s}`
       return r
     }, trial)
   }
@@ -34,43 +34,17 @@ function getBaseURL(): BaseUrl {
     // 线上版本
     prod: release,
     uat: {
-      java: 'https://gateway-uat.yigongpin.net/api/',
-    },
-    uat2: {
-      java: 'https://gateway-uat2.yigongpin.net/api/',
+      java: 'https://wx-uat.51ptj.com/',
     },
     // 体验版本
-    trial: {
-      java: 'http://gateway-uat.yigongpin.net/api/',
-    },
-    // 体验版本
+    trial: trial,
+    // 测试版本
     test: {
-      java: 'http://test-gateway.yigongpin.net/api/',
-    },
-    test1: {
-      java: 'http://gateway-test1.yigongpin.net/api/',
-    },
-    test2: {
-      java: 'http://gateway-test2.yigongpin.net/api/',
-    },
-    test3: {
-      java: 'http://gateway-test3.yigongpin.net/api/',
-    },
-    test4: {
-      java: 'http://gateway-test4.yigongpin.net/api/',
+      java: 'https://wx-test.51ptj.com/',
     },
     // 开发版本
     dev: {
-      java: 'http://devrefactor-crm.yigongpin.net/api/',
-    },
-    dev1: {
-      java: 'http://gateway-dev1.yigongpin.net/api/',
-    },
-    dev2: {
-      java: 'http://gateway-dev2.yigongpin.net/api/',
-    },
-    dev3: {
-      java: 'http://devrefactor3-gateway.yigongpin.net/api/',
+      java: 'https://wx-dev.51ptj.com/',
     },
   }[env]
 

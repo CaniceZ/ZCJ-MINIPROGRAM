@@ -1,8 +1,10 @@
 import Taro from '@tarojs/taro'
 import storage from '@/utils/storage'
 import { loginWx } from '@/api/user'
+import { getHelperCode } from '@/api/info'
+import store from '@/store'
+import { setToken } from '@/store/user'
 import type { RequestConfig } from './types'
-// import store from '@/store'
 // import { setDotVisible } from '@/store/tabbar'
 // store.dispatch(setDotVisible(true))
 // const APP_NAME = 'ygp-yxg-miniprogram'
@@ -140,8 +142,12 @@ function checkStatus(status: RequestStatus, msg: string): void {
             loginWx({ code: res.code, appCode: 1, sourceChannel: 1, userType: 1 }).then((data) => {
               console.log('request:settoken')
               storage.set('token', data.token)
+              store.dispatch(setToken(data.token))
               storage.set('registerStatus', data.registerStatus)
               storage.set('userVO', data.userVO)
+              getHelperCode({}).then((helper) => {
+                storage.set('helperCode', helper?.helperCode)
+              })
               // Taro.switchTab({ url: '/pages/index/index' })
               // }
             })

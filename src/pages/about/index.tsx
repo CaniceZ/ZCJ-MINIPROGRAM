@@ -10,7 +10,9 @@ import maleImg from '@/assets/icon/male.png'
 import femaleImg from '@/assets/icon/female.png'
 import vipImg0 from '@/assets/icon/vip0.png'
 import vipImg from '@/assets/icon/vip.png'
-
+import storage from '@/utils/storage'
+import { checkLoginAndRedirect } from '@/utils/utils'
+import Dialog from '@/components/Dialog'
 import './index.less'
 
 export default () => {
@@ -18,7 +20,11 @@ export default () => {
     navigateTo({ url: `/subpackages/setting/${path}/index` })
   }
   const toRealName = () => {
-    navigateTo({ url: '/subpackages/realname/info/index' })
+    if (storage.get('registerStatus') == '0') {
+      navigateTo({ url: '/pages/login/index' })
+    } else {
+      navigateTo({ url: '/subpackages/realname/info/index' })
+    }
   }
   type InfoType = {
     helperName: string
@@ -35,6 +41,25 @@ export default () => {
     })
   })
   const [isShow, setIsShow] = useState(false)
+  // 未实名弹窗
+  const [dialogVisible2, setDialogVisible2] = useState(false)
+  const confirm2 = () => {
+    setDialogVisible2(false)
+    navigateTo({ url: '/subpackages/realname/info/index' })
+  }
+  const onCancel2 = () => {
+    console.log('cancel2')
+    setDialogVisible2(false)
+  }
+  const toPlan = async () => {
+    if (checkLoginAndRedirect()) {
+      if (storage.get('registerStatus') == 1) {
+        setDialogVisible2(true)
+      } else {
+        navigateTo({ url: '/subpackages/setting/plan/index' })
+      }
+    }
+  }
   return (
     <>
       <SafeArea
@@ -79,7 +104,7 @@ export default () => {
         {!info.validateResult && (
           <View className='realname-btn' onClick={toRealName}>
             <Button type='primary' block className='foot-btn'>
-              立即认证
+              {info.mobile ? '立即认证' : '立即注册'}
             </Button>
           </View>
         )}
@@ -118,15 +143,9 @@ export default () => {
             <Icon name='rect-right' size='14px' color='#5B5C5D'></Icon>
           </View>
         </View>
-        <View
-          className='about-item-wrap p30'
-          onClick={() => {
-            toRouter('aboutme')
-          }}
-        >
-          <View className='about-label'>关于我们</View>
+        <View className='about-item-wrap p30' onClick={toPlan}>
+          <View className='about-label'>可兼职时间</View>
           <View className='about-value'>
-            <View className='about-value-text'>V1.0.1</View>
             <Icon name='rect-right' size='14px' color='#5B5C5D'></Icon>
           </View>
         </View>
@@ -135,10 +154,23 @@ export default () => {
       <QrcodePopup
         visible={isShow}
         type='wx'
+        isNavigationBar
         onClose={() => {
           setIsShow(false)
         }}
       ></QrcodePopup>
+      <Dialog
+        title='填写失败'
+        type='danger'
+        confirmlText='前往认证'
+        cancelText='取消'
+        isNavigationBar
+        visible={dialogVisible2}
+        onConfirm={confirm2}
+        onCancel={onCancel2}
+      >
+        抱歉，请完成个人资料 认证后再填写可兼职时间
+      </Dialog>
     </>
   )
 }

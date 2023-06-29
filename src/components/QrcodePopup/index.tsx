@@ -1,19 +1,24 @@
 import { View, Image, Icon } from '@tarojs/components'
 import { Overlay } from '@nutui/nutui-react-taro'
 import { useEffect, useState } from 'react'
-import qrcodeImg from '@/assets/imgs/xxx.jpg'
-import qrcodeImg2 from '@/assets/imgs/aaa.jpg'
 import './index.less'
 
 export default (props) => {
-  const { visible, type, onClose, text, isNavigationBar = false } = props
+  const {
+    visible,
+    type,
+    onClose,
+    text,
+    subText = '轻松获取更多就业信息',
+    isNavigationBar = false,
+  } = props
   const typeMap = {
     gzh: '长按识别二维码,关注公众号',
     wx: '长按识别二维码添加微信',
   }
   const urlMap = {
-    gzh: qrcodeImg,
-    wx: qrcodeImg2,
+    gzh: 'http://bg1.51ptj.com/bggzh-qrcode.png',
+    wx: 'http://bg1.51ptj.com/bgkf-qrcode.png',
   }
   useEffect(() => {
     setVisible(visible)
@@ -33,7 +38,7 @@ export default (props) => {
               ></Image>
             </View>
             <View className='qrcode-desc'>{text || typeMap[type]}</View>
-            {type === 'gzh' && <View className='qrcode-subtitle'>轻松获取更多就业信息</View>}
+            {type === 'gzh' && <View className='qrcode-subtitle'>{subText}</View>}
             <Icon
               onClick={() => {
                 setVisible(false)

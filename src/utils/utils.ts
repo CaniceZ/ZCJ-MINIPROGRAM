@@ -136,7 +136,50 @@ export function hms2hm(a) {
   alist.splice(alist.length - 1, 1)
   return alist.join(':')
 }
-
+// 2022-01-01 -> 01-01
+export function ymd2md(a) {
+  if (!a) return
+  var alist = a.split('-')
+  alist.splice(0, 1)
+  return alist.join('-')
+}
+// 经纬度算距离
+//经纬度转换成三角函数中度分表形式。
+function rad(d) {
+  return (d * Math.PI) / 180.0
+}
+/**
+ *
+ * @param lat1  纬度1
+ * @param lng1  经度1
+ * @param lat2  纬度2
+ * @param lng2  经度2
+ */
+export function geoDistance(lat1, lng1, lat2, lng2) {
+  let radLat1 = rad(lat1)
+  let radLat2 = rad(lat2)
+  let a = radLat1 - radLat2
+  let b = rad(lng1) - rad(lng2)
+  let s =
+    2 *
+    Math.asin(
+      Math.sqrt(
+        Math.pow(Math.sin(a / 2), 2) +
+          Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2),
+      ),
+    )
+  s = s * 6378.137 // EARTH_RADIUS;
+  s = Math.round(s * 10000) / 10000 //输出为公里
+  return s.toFixed(2)
+}
+// 将数组分成每格为n的新数组
+export function spliceArr(arr, len) {
+  const result = []
+  for (let i = 0; i < arr.length; i += len) {
+    result.push(arr.slice(i, i + len))
+  }
+  return result
+}
 // 未登录跳转
 export function checkLoginAndRedirect() {
   if (storage.get('registerStatus') == 0) {

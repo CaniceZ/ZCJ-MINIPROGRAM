@@ -10,17 +10,15 @@ export default () => {
   const dotVisible = useAppSelector((state) => state.tabbar.dotVisible)
   const dispatch = useAppDispatch()
   const tabSwitch = ({ props }, index) => {
-    if (index === 0 || (index && checkLoginAndRedirect())) {
-      switchTab({
-        url: props.href,
-        success: () => {
-          dispatch(setActiveVisible(index))
-          if (index === 1 && dotVisible) {
-            dispatch(setDotVisible(false))
-          }
-        },
-      })
-    }
+    switchTab({
+      url: props.href,
+      success: () => {
+        dispatch(setActiveVisible(index))
+        if (index === 1 && dotVisible) {
+          dispatch(setDotVisible(false))
+        }
+      },
+    })
   }
   const list = [
     {

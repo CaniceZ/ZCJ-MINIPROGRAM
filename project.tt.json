@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "ZCJ-MINIPROGRAM",
+  "projectname": "BG-MINIPROGRAM",
   "appid": "testAppId",
   "setting": {
     "es6": false,

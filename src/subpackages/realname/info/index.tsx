@@ -1,23 +1,37 @@
 import { View } from '@tarojs/components'
 import { Button } from '@nutui/nutui-react-taro'
 import useSetState from '@/hooks/useSetState'
-import { showToast, navigateBack } from '@tarojs/taro'
+import { showToast, navigateBack, switchTab, useRouter } from '@tarojs/taro'
 import { Checkbox, Field, Textarea } from '@/package'
 import { baseUrl } from '@/utils/http/index'
 import { userSaveHelperInfo, realNameIdentify } from '@/api/info'
 import Upload from '@/components/Upload'
 import { useEffect, useMemo, useState } from 'react'
-import './index.less'
+import { useAppDispatch } from '@/hooks/useStore'
+import { setActiveVisible } from '@/store/tabbar'
 import storage from '@/utils/storage'
+import { listJobType } from '@/api/sys'
+import './index.less'
 
 export default () => {
-  const typeStatus = [
-    { value: '2', label: '服务员' },
-    { value: '4', label: '传菜' },
-    { value: '1', label: '洗碗' },
-    { value: '3', label: '咨客' },
-    { value: '5', label: '打包员' },
-  ]
+  const [typeStatus, setTypeStatus] = useState<any>([])
+  const {
+    params: { from },
+  } = useRouter()
+  useEffect(() => {
+    listJobType({}).then((data) => {
+      data.forEach((item) => {
+        item.value = item.dictCode
+        item.label = item.dictName
+      })
+      setTypeStatus(data)
+    })
+  }, [])
+  const dispatch = useAppDispatch()
+  const toHome = () => {
+    switchTab({ url: '/pages/index/index' })
+    dispatch(setActiveVisible(0))
+  }
   const onStatusChange = (active: string[]) => {
     setState({
       jobTypeList: active,
@@ -32,8 +46,10 @@ export default () => {
     sex: '', // 性别
     name: '', // 姓名
     idNum: '', // 身份证号
+    nation: '', // 国籍
+    address: '', // 地址
+    birth: '', // 生日
     bankCardId: '', // 银行卡号
-    helperCode: '', // 帮工编号
     bankCardPhone: '', // 银行卡预留手机
     jobTypeList: [], // 擅长工作
     jobTypeNameList: [], // 擅长工作name
@@ -54,12 +70,14 @@ export default () => {
         faceAttachmentId: state.attachmentList[0].attachmentId,
         nationalAttachmentId: state.attachmentList2[0].attachmentId,
       }).then((data) => {
-        if (data?.validateResult) {
+        if (data?.idNum) {
           setState({
             sex: data.sex,
             name: data.name,
             idNum: data.idNum,
-            helperCode: data.helperCode,
+            address: data.address,
+            nation: data.nation,
+            birth: data.birth,
           })
           setValidateResult(true)
         } else {
@@ -98,6 +116,9 @@ export default () => {
     } else if (!/^1\d{10}$/.test(state.emergencyContactPhone)) {
       // 紧急联系人手机
       showToast({ title: '请输入正确的紧急联系人手机', icon: 'none' })
+    } else if (state.emergencyContactPhone === state.bankCardPhone) {
+      // 两个手机相同
+      showToast({ title: '预留手机不能与紧急联系人手机相同', icon: 'none' })
     } else if (state.jobTypeList.length === 0) {
       // 擅长工作
       showToast({ title: '请选择擅长工作', icon: 'none' })
@@ -107,14 +128,19 @@ export default () => {
       subData.majorJobTypeName = subData.jobTypeNameList[0]
       subData.faceAttachmentId = state.attachmentList[0].attachmentId
       subData.nationalAttachmentId = state.attachmentList2[0].attachmentId
-      await userSaveHelperInfo(subData)
+      const data = await userSaveHelperInfo(subData)
       showToast({
         title: '实名认证成功',
         icon: 'none',
         success() {
           setTimeout(() => {
             storage.set('registerStatus', 2)
-            navigateBack()
+            storage.set('helperCode', data)
+            if (from === 'login') {
+              toHome()
+            } else {
+              navigateBack()
+            }
           }, 1000)
         },
       })
@@ -141,6 +167,7 @@ export default () => {
           <View className='upload-item'>
             <Upload
               value={state.attachmentList2}
+              attachmentType='BG_ID_CARD'
               count={1}
               requestUrl={`${baseUrl.banggong}/attachment/upload`}
               className='md-upload'
@@ -198,8 +225,7 @@ export default () => {
             setState({ bankCardId: e ? e.detail.value : '' })
           }}
           inputAlign='right'
-          type='number'
-          maxlength={19}
+          textMaxLength={19}
           clear={false}
         />
         <Field
@@ -250,7 +276,7 @@ export default () => {
             setState({ emergencyContact: e ? e.detail.value : '' })
           }}
           inputAlign='right'
-          maxlength={6}
+          textMaxLength={6}
           clear={false}
         />
         <Field

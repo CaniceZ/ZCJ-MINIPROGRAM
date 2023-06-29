@@ -19,6 +19,8 @@ export default defineAppConfig({
         'aboutme/index',
         // 基本资料
         'userinfo/index',
+        // 工作计划
+        'plan/index',
       ],
     },
     {
@@ -26,8 +28,12 @@ export default defineAppConfig({
       pages: [
         // 考勤列表
         'checklist/index',
-        // 任务详情
+        // 分享详情中转页
+        'todetail/index',
+        // 首页任务详情
         'detail/index',
+        // 帮工任务详情
+        'taskdetail/index',
         // 收益明细
         'orderdetail/index',
       ],

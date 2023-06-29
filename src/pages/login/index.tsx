@@ -1,12 +1,14 @@
 import { View, Image, Text } from '@tarojs/components'
 import { Button, Checkbox } from '@nutui/nutui-react-taro'
 import { useState, useCallback } from 'react'
-import { switchTab, showToast, navigateTo, login } from '@tarojs/taro'
+import { switchTab, showToast, navigateTo, login, redirectTo } from '@tarojs/taro'
 import storage from '@/utils/storage'
 import { useAppDispatch } from '@/hooks/useStore'
 import { setActiveVisible } from '@/store/tabbar'
 import { loginWx, getWxPhoneNumber } from '@/api/user'
+import { setToken } from '@/store/user'
 import './index.less'
+import { getHelperCode } from '@/api/info'
 
 export default () => {
   const [checked, setChecked] = useState(false)
@@ -36,9 +38,14 @@ export default () => {
                 mobile: data.phone_info.phoneNumber,
               }).then((data2) => {
                 storage.set('token', data2.token)
+                dispatch(setToken(data2.token))
                 storage.set('registerStatus', data2.registerStatus)
                 storage.set('userVO', data2.userVO)
-                toHome()
+                getHelperCode({}).then((helper) => {
+                  storage.set('helperCode', helper?.helperCode)
+                  // toHome()
+                  redirectTo({ url: '/subpackages/realname/info/index?from=login' })
+                })
               })
             } else {
               console.log('登录失败！' + res.errMsg)

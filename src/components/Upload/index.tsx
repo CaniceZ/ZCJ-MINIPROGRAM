@@ -143,10 +143,10 @@ const Upload: FC<Partial<UploadProps>> = (props) => {
         name: 'file', // 必须填file。
         success(res) {
           const response = res.data && JSON.parse(res.data)
-          if (response.succeed) {
+          if (response.code === 0) {
             file.attachmentId = response.data.attachmentId
             file.filePath = response.data.filePath
-            file.fileUrl = response.data.fileUrl
+            file.fileUrl = response.data.stsUrl
             file.stsUrl = response.data.stsUrl
             file.status = FileStatus.Done
             fileList.current = fileList.current.concat(file)

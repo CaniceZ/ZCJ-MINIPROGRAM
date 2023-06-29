@@ -42,29 +42,26 @@ const CheckBox: FC<CheckboxProps> = (props) => {
     }
   }, [fieldMaps])
 
-  const itemClick = useCallback(
-    (item) => {
-      if (!value.some((ac) => ac == item[mergedFieldMaps.value])) {
-        if (!isMultiple) {
-          onChange([item[mergedFieldMaps.value]], item)
-        } else {
-          onChange([...value, item[mergedFieldMaps.value]], item)
-        }
+  const itemClick = (item) => {
+    if (!value.some((ac) => ac == item[mergedFieldMaps.value])) {
+      if (!isMultiple) {
+        onChange([item[mergedFieldMaps.value]], item)
       } else {
-        if (!isMultiple) return
-        let arr: (string | number)[] = []
-        for (let i = 0; i < value.length; i++) {
-          if (value[i] == item[mergedFieldMaps.value]) {
-            arr = [...value]
-            arr.splice(i, 1)
-            break
-          }
-        }
-        onChange(arr, item)
+        onChange([...value, item[mergedFieldMaps.value]], item)
       }
-    },
-    [value],
-  )
+    } else {
+      if (!isMultiple) return
+      let arr: (string | number)[] = []
+      for (let i = 0; i < value.length; i++) {
+        if (value[i] == item[mergedFieldMaps.value]) {
+          arr = [...value]
+          arr.splice(i, 1)
+          break
+        }
+      }
+      onChange(arr, item)
+    }
+  }
 
   return (
     <View className='btn-check-box'>
